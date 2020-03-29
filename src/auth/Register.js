@@ -35,12 +35,12 @@ const Register = () => {
     dispatch(registerAsync({ name, email, password }));
   };
 
-  // if (isAuthenticated) {
-  //   return <Dashboard />;
-  // }
+  if (isAuthenticated) {
+    return <Dashboard />;
+  }
 
-  // const isButtonDisabled =
-  //   !name.trim() || password.trim().length < 6 || password !== confirmPassword;
+  const isButtonDisabled =
+    !name.trim() || password.trim().length < 6 || password !== confirmPassword;
 
   return (
     <div className={classes.container}>
@@ -73,7 +73,7 @@ const Register = () => {
           required
         />
         <Button
-          // disabled={isButtonDisabled}
+          disabled={isButtonDisabled}
           variant="contained"
           color="primary"
           onClick={registerUser}

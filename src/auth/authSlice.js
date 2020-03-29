@@ -72,7 +72,9 @@ export const registerAsync = payload => async dispatch => {
       },
       data: payload
     });
+
     dispatch(register(res.data));
+    localStorage.setItem("jwt", res.data.jwt);
   } catch (err) {
     const {
       response: { data, status }
