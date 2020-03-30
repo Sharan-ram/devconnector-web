@@ -1,11 +1,10 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/styles";
-
-import Dashboard from "../features/Dashboard";
 
 import { registerAsync } from "./authSlice";
 
@@ -36,7 +35,7 @@ const Register = () => {
   };
 
   if (isAuthenticated) {
-    return <Dashboard />;
+    return <Redirect to="/dashboard" />;
   }
 
   const isButtonDisabled =
