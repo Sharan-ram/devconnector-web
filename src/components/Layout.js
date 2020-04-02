@@ -23,6 +23,7 @@ const useStyles = makeStyles({
 const Layout = () => {
   const classes = useStyles();
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  console.log("isAuthenticated", isAuthenticated);
   return (
     <Router>
       <Navbar />
