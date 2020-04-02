@@ -103,4 +103,38 @@ export const registerAsync = payload => async dispatch => {
   }
 };
 
+export const loginAsync = payload => async dispatch => {
+  dispatch(loading());
+  try {
+    const res = await axios({
+      url: `${process.env.REACT_APP_API_URL}/api/auth`,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      data: payload
+    });
+    dispatch(login(res.data));
+    localStorage.setItem("jwt", res.data.jwt);
+  } catch (err) {
+    const {
+      response: { data, status }
+    } = err;
+    console.error(err);
+    let payload = {};
+    if (typeof data === String) {
+      payload = {
+        msg: data,
+        status
+      };
+    } else {
+      payload = {
+        ...data.errors[0],
+        status
+      };
+    }
+    dispatch(login({ error: true, errorData: payload }));
+  }
+};
+
 export default authSlice.reducer;
