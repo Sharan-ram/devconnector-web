@@ -20,42 +20,34 @@ const authSlice = createSlice({
     },
     register(state, action) {
       const {
-        payload: { error, errorData, jwt, user }
+        payload: { error, errorData, jwt }
       } = action;
       if (error) {
         return Object.assign({}, state, {
-          jwt: null,
-          user: null,
           error: errorData,
-          isLoading: false,
-          isAuthenticated: false
+          isLoading: false
         });
       }
       return Object.assign({}, state, {
         isAuthenticated: true,
         jwt,
-        user,
         isLoading: false,
         error: {}
       });
     },
     login(state, action) {
       const {
-        payload: { error, errorData, jwt, user }
+        payload: { error, errorData, jwt }
       } = action;
       if (error) {
         return Object.assign({}, state, {
-          jwt: null,
-          user: null,
           error: errorData,
-          isLoading: false,
-          isAuthenticated: false
+          isLoading: false
         });
       }
       return Object.assign({}, state, {
         isAuthenticated: true,
         jwt,
-        user,
         isLoading: false,
         error: {}
       });
