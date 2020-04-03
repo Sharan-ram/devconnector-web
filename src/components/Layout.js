@@ -12,7 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import AuthenticationRoutes from "./AuthenticationRoutes";
 import PublicRoutes from "./PublicRoutes";
 import PrivateRoutes from "./PrivateRoutes";
-import Navbar from "./Navbar";
+import TopNavigation from "./TopNavigation";
 
 const useStyles = makeStyles({
   container: {
@@ -23,10 +23,9 @@ const useStyles = makeStyles({
 const Layout = () => {
   const classes = useStyles();
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-  console.log("isAuthenticated", isAuthenticated);
   return (
     <Router>
-      <Navbar />
+      <TopNavigation />
       <div className={classes.container}>
         <Switch>
           <Route
