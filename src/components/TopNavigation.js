@@ -12,13 +12,22 @@ import { NavLink } from "./ui";
 
 const useStyles = makeStyles({
   appBar: {
+    display: "grid",
+    gridTemplateColumns: "1fr 3fr",
+    gridAutoRows: "minmax(64px, auto)",
+    alignItems: "center",
     background: "#343a40",
-    minHeight: 64,
     paddingLeft: "2rem",
     paddingRight: "2rem"
   },
-  container: {
-    minHeight: 64
+  logo: {
+    justifySelf: "start"
+  },
+  navLinks: {
+    justifySelf: "end",
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr 1fr 1fr",
+    justifyItems: "center"
   }
 });
 
@@ -28,35 +37,29 @@ const TopNavigation = () => {
   const { isAuthenticated } = useSelector(state => state.auth);
   return (
     <AppBar className={classes.appBar}>
-      <Grid
-        classes={{ container: classes.container }}
-        container
-        justify="space-between"
-        alignItems="center"
-        sm={12}
-        md={12}
-        lg={12}
-      >
-        <Grid item>
-          <NavLink to="/">DevConnector</NavLink>
-        </Grid>
-        <Grid item>
+      <div className={classes.logo}>
+        <NavLink to="/">DevConnector</NavLink>
+      </div>
+      <div className={classes.navLinks}>
+        <div>
           <NavLink to="/users/profiles/all">Developers</NavLink>
-        </Grid>
+        </div>
         {isAuthenticated && (
           <>
-            <Grid item>
+            <div>
               <NavLink to="/posts/all">Posts</NavLink>
-            </Grid>
-            <Grid item>
+            </div>
+            <div>
               <NavLink to="/">Dashboard</NavLink>
-            </Grid>
-            <Grid item>
-              <Button onClick={() => dispatch(logoutAction())}>Logout</Button>
-            </Grid>
+            </div>
+            <div>
+              <NavLink to="#" onClick={() => dispatch(logoutAction())}>
+                Logout
+              </NavLink>
+            </div>
           </>
         )}
-      </Grid>
+      </div>
     </AppBar>
   );
 };
