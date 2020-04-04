@@ -15,11 +15,11 @@ const useStyles = makeStyles({
   }
 });
 
-const NavLink = ({ to, children, className }) => {
+const NavLink = ({ to, children, className, ...rest }) => {
   const classes = useStyles();
   return (
-    <Link to={to} className={classes.link}>
-      <Typography className={cx(classes.text, className)}>
+    <Link {...rest} to={to} className={classes.link}>
+      <Typography component="span" className={cx(classes.text, className)}>
         {children}
       </Typography>
     </Link>
