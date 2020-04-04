@@ -2,8 +2,9 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import AppBar from "@material-ui/core/AppBar";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
+import CodeIcon from "@material-ui/icons/Code";
+import PersonIcon from "@material-ui/icons/Person";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { logout as logoutAction } from "../auth/authSlice";
@@ -20,8 +21,19 @@ const useStyles = makeStyles({
     paddingLeft: "2rem",
     paddingRight: "2rem"
   },
-  logo: {
+  logoWrapperDiv: {
     justifySelf: "start"
+  },
+  logoWrapper: {
+    display: "grid",
+    gridTemplateColumns: "1fr 10fr",
+    alignItems: "center",
+    gridColumnGap: "0.2em",
+    fontWeight: "bold",
+    fontSize: "20px"
+  },
+  logo: {
+    display: "grid"
   },
   navLinks: {
     justifySelf: "end",
@@ -37,8 +49,13 @@ const TopNavigation = () => {
   const { isAuthenticated } = useSelector(state => state.auth);
   return (
     <AppBar className={classes.appBar}>
-      <div className={classes.logo}>
-        <NavLink to="/">DevConnector</NavLink>
+      <div className={classes.logoWrapperDiv}>
+        <NavLink to="/" className={classes.logoWrapper}>
+          <div className={classes.logo}>
+            <CodeIcon style={{ fontSize: "2rem" }} />
+          </div>
+          <div>DevConnector</div>
+        </NavLink>
       </div>
       <div className={classes.navLinks}>
         <div>

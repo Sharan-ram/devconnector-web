@@ -7,11 +7,14 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   link: {
-    "text-decoration": "none"
+    textDecoration: "none"
   },
   text: {
     fontSize: 16,
-    color: "#ffffff"
+    color: "#ffffff",
+    "&:hover": {
+      color: "#17a2b8"
+    }
   }
 });
 
