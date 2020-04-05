@@ -38,6 +38,11 @@ const useStyles = makeStyles({
     display: "grid",
     gridTemplateColumns: "1fr 1fr 1fr 1fr",
     justifyItems: "center"
+  },
+  developerLink: {
+    justifySelf: "end",
+    display: "grid",
+    gridTemplateColumns: "1fr"
   }
 });
 
@@ -55,7 +60,9 @@ const TopNavigation = () => {
           <div>DevConnector</div>
         </NavLink>
       </div>
-      <div className={classes.navLinks}>
+      <div
+        className={isAuthenticated ? classes.navLinks : classes.developerLink}
+      >
         <div>
           <NavLink to="/users/profiles/all">Developers</NavLink>
         </div>
