@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 
-import { UserProfiles } from "../features/Profile";
+import { UserProfiles } from "../../features/Profile";
 
 const PublicRoutes = ({ match: { path } }) => {
   return (
