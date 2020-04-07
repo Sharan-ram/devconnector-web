@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+import api from "../../api";
+
 const initialState = {
   isLoading: false,
   myProfile: null,
@@ -44,36 +46,15 @@ const profileSlice = createSlice({
 
 export const { loading, getMyProfile, updateProfile } = profileSlice.actions;
 
-export const getMyProfileAsync = ({ jwt }) => async dispatch => {
-  dispatch(loading());
-  try {
-    const res = await axios({
-      method: "GET",
-      url: `${process.env.REACT_APP_API_URL}/api/profile/me`,
-      headers: {
-        "x-auth-token": jwt
-      }
-    });
-    dispatch(getMyProfile({ profile: res.data }));
-  } catch (err) {
-    console.error(err);
-    const {
-      response: { data, status }
-    } = err;
-    let payload = {};
-    if (typeof data === String) {
-      payload = {
-        msg: data,
-        status
-      };
-    } else {
-      payload = {
-        ...data.errors[0],
-        status
-      };
-    }
-    dispatch(getMyProfile({ error: true, errorData: payload }));
-  }
+export const getMyProfileAsync = () => dispatch => {
+  const options = {
+    loadingAction: loading,
+    dataAction: getMyProfile,
+    url: `${process.env.REACT_APP_API_URL}/api/profile/me`,
+    stateSlice: "profile",
+    dispatch
+  };
+  api(options);
 };
 
 export const updateProfileAsync = payload => async dispatch => {
