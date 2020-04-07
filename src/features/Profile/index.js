@@ -1,4 +1,4 @@
-import CreateProfile from "./CreateProfile";
+import MyProfile from "./MyProfile";
 import UserProfiles from "./UserProfiles";
 
-export { CreateProfile, UserProfiles };
+export { MyProfile, UserProfiles };
