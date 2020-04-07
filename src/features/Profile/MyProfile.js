@@ -265,9 +265,9 @@ const MyProfile = () => {
     dispatch(updateProfileAsync({ jwt, profile }));
   };
 
-  if (myProfile !== null)
-    return <Form profile={myProfile} updateProfile={updateProfile} />;
-  return null;
+  if (myProfile === null) return null;
+
+  return <Form profile={myProfile} updateProfile={updateProfile} />;
 };
 
 export default MyProfile;
