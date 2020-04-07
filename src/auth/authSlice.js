@@ -51,14 +51,11 @@ const authSlice = createSlice({
         isLoading: false,
         error: {}
       });
-    },
-    logout() {
-      return initialState;
     }
   }
 });
 
-export const { loading, register, login, logout } = authSlice.actions;
+export const { loading, register, login } = authSlice.actions;
 
 export const registerAsync = payload => async dispatch => {
   dispatch(loading());

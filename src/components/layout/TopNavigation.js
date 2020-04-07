@@ -5,8 +5,6 @@ import AppBar from "@material-ui/core/AppBar";
 import CodeIcon from "@material-ui/icons/Code";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { logout as logoutAction } from "../../auth/authSlice";
-
 import { NavLink } from "../ui";
 
 const useStyles = makeStyles({
@@ -75,7 +73,7 @@ const TopNavigation = () => {
               <NavLink to="/">Dashboard</NavLink>
             </div>
             <div>
-              <NavLink to="#" onClick={() => dispatch(logoutAction())}>
+              <NavLink to="#" onClick={() => dispatch({ type: "LOGOUT" })}>
                 Logout
               </NavLink>
             </div>
