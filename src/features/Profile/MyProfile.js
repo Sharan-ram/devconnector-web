@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect } from "react";
+import React, { useState, useReducer } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import Button from "@material-ui/core/Button";
@@ -10,7 +10,9 @@ import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
-import { getMyProfileAsync, updateProfileAsync } from "./profileSlice";
+import { updateProfileAsync } from "./profileSlice";
+
+import useMyProfile from "../../hooks/useMyProfile";
 
 const getInitialState = profile => {
   const {
@@ -252,13 +254,10 @@ const Form = ({ profile, updateProfile }) => {
 };
 
 const MyProfile = () => {
+  const [isLoading, myProfile] = useMyProfile();
   const jwt = useSelector(state => state.auth.jwt);
-  const { isLoading, myProfile } = useSelector(state => state.profile);
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getMyProfileAsync({ jwt }));
-  }, [jwt, dispatch]);
+  const dispatch = useDispatch();
 
   if (isLoading) return <div>Loading Profile ...</div>;
 
