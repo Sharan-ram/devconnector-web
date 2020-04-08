@@ -60,7 +60,7 @@ export const updateProfileAsync = payload => async dispatch => {
   const options = {
     loadingAction: loading,
     dataAction: updateProfile,
-    method: "PUT",
+    method: "POST",
     url: `${process.env.REACT_APP_API_URL}/api/profile`,
     payload,
     stateSlice: "myProfile",
