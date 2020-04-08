@@ -1,5 +1,5 @@
 import React, { useState, useReducer } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import Button from "@material-ui/core/Button";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -255,14 +255,13 @@ const Form = ({ profile, updateProfile }) => {
 
 const MyProfile = () => {
   const [isLoading, myProfile] = useMyProfile();
-  const jwt = useSelector(state => state.auth.jwt);
 
   const dispatch = useDispatch();
 
   if (isLoading) return <div>Loading Profile ...</div>;
 
   const updateProfile = profile => {
-    dispatch(updateProfileAsync({ jwt, profile }));
+    dispatch(updateProfileAsync(profile);
   };
 
   if (myProfile === null) return null;
