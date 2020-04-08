@@ -43,7 +43,7 @@ const api = async options => {
       response: { data, status }
     } = err;
     let payload = {};
-    if (typeof data === String) {
+    if (typeof data === "string") {
       payload = {
         msg: data,
         status
