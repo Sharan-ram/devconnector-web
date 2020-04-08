@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+
+import api from "../api";
 
 const initialState = {
   isAuthenticated: false,
@@ -14,43 +15,33 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loading(state, _) {
-      return Object.assign({}, state, {
-        isLoading: true
-      });
+      state.isLoading = true;
     },
     register(state, action) {
       const {
         payload: { error, errorData, jwt }
       } = action;
       if (error) {
-        return Object.assign({}, state, {
-          error: errorData,
-          isLoading: false
-        });
+        state.error = errorData;
+        state.isLoading = false;
+      } else {
+        state.isAuthenticated = true;
+        state.jwt = jwt;
+        state.isLoading = false;
       }
-      return Object.assign({}, state, {
-        isAuthenticated: true,
-        jwt,
-        isLoading: false,
-        error: {}
-      });
     },
     login(state, action) {
       const {
         payload: { error, errorData, jwt }
       } = action;
       if (error) {
-        return Object.assign({}, state, {
-          error: errorData,
-          isLoading: false
-        });
+        state.error = errorData;
+        state.isLoading = false;
+      } else {
+        state.isAuthenticated = true;
+        state.jwt = jwt;
+        state.isLoading = false;
       }
-      return Object.assign({}, state, {
-        isAuthenticated: true,
-        jwt,
-        isLoading: false,
-        error: {}
-      });
     }
   }
 });
@@ -58,72 +49,31 @@ const authSlice = createSlice({
 export const { loading, register, login } = authSlice.actions;
 
 export const registerAsync = payload => async dispatch => {
-  dispatch(loading());
-  try {
-    const res = await axios({
-      url: `${process.env.REACT_APP_API_URL}/api/users`,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      data: payload
-    });
-
-    dispatch(register(res.data));
-    localStorage.setItem("jwt", res.data.jwt);
-  } catch (err) {
-    const {
-      response: { data, status }
-    } = err;
-    console.error(err);
-    let payload = {};
-    if (typeof data === String) {
-      payload = {
-        msg: data,
-        status
-      };
-    } else {
-      payload = {
-        ...data.errors[0],
-        status
-      };
-    }
-    dispatch(register({ error: true, errorData: payload }));
-  }
+  const options = {
+    loadingAction: loading,
+    dataAction: register,
+    method: "POST",
+    url: `${process.env.REACT_APP_API_URL}/api/users`,
+    payload,
+    access: "public",
+    stateSlice: "jwt",
+    dispatch
+  };
+  api(options);
 };
 
 export const loginAsync = payload => async dispatch => {
-  dispatch(loading());
-  try {
-    const res = await axios({
-      url: `${process.env.REACT_APP_API_URL}/api/auth`,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      data: payload
-    });
-    dispatch(login(res.data));
-    localStorage.setItem("jwt", res.data.jwt);
-  } catch (err) {
-    const {
-      response: { data, status }
-    } = err;
-    console.error(err);
-    let payload = {};
-    if (typeof data === String) {
-      payload = {
-        msg: data,
-        status
-      };
-    } else {
-      payload = {
-        ...data.errors[0],
-        status
-      };
-    }
-    dispatch(login({ error: true, errorData: payload }));
-  }
+  const options = {
+    loadingAction: loading,
+    dataAction: login,
+    method: "POST",
+    url: `${process.env.REACT_APP_API_URL}/api/auth`,
+    payload,
+    access: "public",
+    stateSlice: "jwt",
+    dispatch
+  };
+  api(options);
 };
 
 export default authSlice.reducer;
