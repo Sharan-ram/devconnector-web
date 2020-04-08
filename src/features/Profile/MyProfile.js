@@ -261,7 +261,7 @@ const MyProfile = () => {
   if (isLoading) return <div>Loading Profile ...</div>;
 
   const updateProfile = profile => {
-    dispatch(updateProfileAsync(profile);
+    dispatch(updateProfileAsync(profile));
   };
 
   if (myProfile === null) return null;
