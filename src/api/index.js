@@ -37,6 +37,10 @@ const api = async options => {
       url
     });
     dispatch(dataAction({ [stateSlice]: res.data }));
+
+    if (stateSlice === "jwt") {
+      localStorage.setItem("jwt", res.data.jwt);
+    }
   } catch (err) {
     console.error(err);
     const {
