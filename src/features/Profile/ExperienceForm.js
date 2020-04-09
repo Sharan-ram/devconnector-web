@@ -55,7 +55,12 @@ const getInitialState = ({ type, experience }) => {
   };
 };
 
-const ExperienceForm = ({ type, dispatchFunction, experience }) => {
+const ExperienceForm = ({
+  type,
+  dispatchFunction,
+  experience,
+  deleteExperience,
+}) => {
   const [
     { title, company, location, description, from, to, current },
     dispatch,
@@ -150,6 +155,11 @@ const ExperienceForm = ({ type, dispatchFunction, experience }) => {
       </div>
       <div>
         <Button onClick={submitExperience}>Submit</Button>
+        {type === "edit" && (
+          <Button onClick={() => deleteExperience(experience._id)}>
+            Delete
+          </Button>
+        )}
       </div>
     </div>
   );
