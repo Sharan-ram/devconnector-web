@@ -18,12 +18,12 @@ const reducer = (state, action) => {
     case "TO":
     case "CURRENT":
       return Object.assign({}, state, {
-        [action.type.toLowerCase()]: action.payload
+        [action.type.toLowerCase()]: action.payload,
       });
   }
 };
 
-const getInitialState = ({ type }) => {
+const getInitialState = ({ type, experience }) => {
   if (type === "add") {
     return {
       title: "",
@@ -32,25 +32,44 @@ const getInitialState = ({ type }) => {
       description: "",
       from: moment(),
       to: undefined,
-      current: false
+      current: false,
     };
   }
+  const {
+    title,
+    company,
+    location,
+    description,
+    from,
+    to,
+    current,
+  } = experience;
+  return {
+    title,
+    company,
+    location,
+    description,
+    from: moment(from),
+    to: to && moment(to),
+    current,
+  };
 };
 
-const ExperienceForm = ({ type, dispatchFunction }) => {
+const ExperienceForm = ({ type, dispatchFunction, experience }) => {
   const [
     { title, company, location, description, from, to, current },
-    dispatch
-  ] = useReducer(reducer, getInitialState({ type }));
+    dispatch,
+  ] = useReducer(reducer, getInitialState({ type, experience }));
   const submitExperience = () => {
     dispatchFunction({
+      _id: experience._id,
       title,
       company,
       location,
       description,
       from: from.toISOString(),
       to: to?.toISOString(),
-      current
+      current,
     });
   };
 
@@ -60,7 +79,7 @@ const ExperienceForm = ({ type, dispatchFunction }) => {
         <TextField
           label="Job Title"
           value={title}
-          onChange={e => dispatch({ type: "TITLE", payload: e.target.value })}
+          onChange={(e) => dispatch({ type: "TITLE", payload: e.target.value })}
           required
         />
       </div>
@@ -68,7 +87,9 @@ const ExperienceForm = ({ type, dispatchFunction }) => {
         <TextField
           label="Company"
           value={company}
-          onChange={e => dispatch({ type: "COMPANY", payload: e.target.value })}
+          onChange={(e) =>
+            dispatch({ type: "COMPANY", payload: e.target.value })
+          }
           required
         />
       </div>
@@ -76,7 +97,7 @@ const ExperienceForm = ({ type, dispatchFunction }) => {
         <TextField
           label="Location"
           value={location}
-          onChange={e =>
+          onChange={(e) =>
             dispatch({ type: "LOCATION", payload: e.target.value })
           }
         />
@@ -85,7 +106,7 @@ const ExperienceForm = ({ type, dispatchFunction }) => {
         <DatePicker
           label="From Date"
           value={from}
-          onChange={date => dispatch({ type: "FROM", payload: date })}
+          onChange={(date) => dispatch({ type: "FROM", payload: date })}
           format="DD/MM/YYYY"
           variant="inline"
           autoOk
@@ -97,7 +118,7 @@ const ExperienceForm = ({ type, dispatchFunction }) => {
           control={
             <Checkbox
               checked={current}
-              onChange={e =>
+              onChange={(e) =>
                 dispatch({ type: "CURRENT", payload: e.target.checked })
               }
             />
@@ -109,7 +130,7 @@ const ExperienceForm = ({ type, dispatchFunction }) => {
         <DatePicker
           label="To Date"
           value={to}
-          onChange={date => dispatch({ type: "TO", payload: date })}
+          onChange={(date) => dispatch({ type: "TO", payload: date })}
           format="DD/MM/YYYY"
           disabled={current}
           disableFuture
@@ -121,7 +142,7 @@ const ExperienceForm = ({ type, dispatchFunction }) => {
         <TextareaAutosize
           rowsMin={5}
           value={description}
-          onChange={e =>
+          onChange={(e) =>
             dispatch({ type: "DESCRIPTION", payload: e.target.value })
           }
           placeholder="Job Description"
