@@ -64,6 +64,18 @@ const profileSlice = createSlice({
         state.myProfile = myProfile;
       }
     },
+    deleteExperience(state, action) {
+      const {
+        payload: { error, errorData, myProfile },
+      } = action;
+      if (error) {
+        state.error = errorData;
+        state.isLoading = false;
+      } else {
+        state.isLoading = false;
+        state.myProfile = myProfile;
+      }
+    },
   },
 });
 
@@ -73,6 +85,7 @@ export const {
   updateProfile,
   addExperience,
   editExperience,
+  deleteExperience,
 } = profileSlice.actions;
 
 export const getMyProfileAsync = () => (dispatch) => {
@@ -121,6 +134,18 @@ export const editExperienceAsync = ({ _id, ...payload }) => async (
     method: "PUT",
     url: `${process.env.REACT_APP_API_URL}/api/profile/experience/${_id}`,
     payload,
+    stateSlice: "myProfile",
+    dispatch,
+  };
+  api(options);
+};
+
+export const deleteExperienceAsync = (id) => async (dispatch) => {
+  const options = {
+    loadingAction: loading,
+    dataAction: deleteExperience,
+    method: "DELETE",
+    url: `${process.env.REACT_APP_API_URL}/api/profile/experience/${id}`,
     stateSlice: "myProfile",
     dispatch,
   };

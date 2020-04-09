@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 
 import useMyProfile from "../../hooks/useMyProfile";
-import { editExperienceAsync } from "./profileSlice";
+import { editExperienceAsync, deleteExperienceAsync } from "./profileSlice";
 import ExperienceForm from "./ExperienceForm";
 
 const EditExperience = ({
@@ -28,11 +28,17 @@ const EditExperience = ({
     setRedirect(true);
   };
 
+  const deleteExperience = (id) => {
+    dispatch(deleteExperienceAsync(id));
+    setRedirect(true);
+  };
+
   return (
     <ExperienceForm
       type="edit"
       experience={experience}
       dispatchFunction={editExperience}
+      deleteExperience={deleteExperience}
     />
   );
 };
