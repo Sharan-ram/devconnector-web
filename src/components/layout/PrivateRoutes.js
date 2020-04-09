@@ -4,7 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import {
   MyProfile,
   AddExperience,
-  EditExperience
+  EditExperience,
 } from "../../features/Profile";
 import { Posts } from "../../features/Post";
 import Dashboard from "../../features/Dashboard";
@@ -17,6 +17,11 @@ const PrivateRoutes = ({ match: { path } }) => {
         exact
         path={`${path}profile/me/add-experience`}
         component={AddExperience}
+      />
+      <Route
+        exact
+        path={`${path}profile/me/edit-experience/:id`}
+        component={EditExperience}
       />
       <Route exact path={`${path}posts/all`} component={Posts} />
       <Route component={Dashboard} />

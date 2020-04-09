@@ -6,7 +6,7 @@ const initialState = {
   isLoading: false,
   myProfile: null,
   userProfiles: null,
-  error: null
+  error: null,
 };
 
 const profileSlice = createSlice({
@@ -18,7 +18,7 @@ const profileSlice = createSlice({
     },
     getMyProfile(state, action) {
       const {
-        payload: { error, errorData, myProfile }
+        payload: { error, errorData, myProfile },
       } = action;
       if (error) {
         state.error = errorData;
@@ -30,7 +30,7 @@ const profileSlice = createSlice({
     },
     updateProfile(state, action) {
       const {
-        payload: { error, errorData, myProfile }
+        payload: { error, errorData, myProfile },
       } = action;
       if (error) {
         state.error = errorData;
@@ -42,7 +42,7 @@ const profileSlice = createSlice({
     },
     addExperience(state, action) {
       const {
-        payload: { error, errorData, myProfile }
+        payload: { error, errorData, myProfile },
       } = action;
       if (error) {
         state.error = errorData;
@@ -51,29 +51,42 @@ const profileSlice = createSlice({
         state.isLoading = false;
         state.myProfile = myProfile;
       }
-    }
-  }
+    },
+    editExperience(state, action) {
+      const {
+        payload: { error, errorData, myProfile },
+      } = action;
+      if (error) {
+        state.error = errorData;
+        state.isLoading = false;
+      } else {
+        state.isLoading = false;
+        state.myProfile = myProfile;
+      }
+    },
+  },
 });
 
 export const {
   loading,
   getMyProfile,
   updateProfile,
-  addExperience
+  addExperience,
+  editExperience,
 } = profileSlice.actions;
 
-export const getMyProfileAsync = () => dispatch => {
+export const getMyProfileAsync = () => (dispatch) => {
   const options = {
     loadingAction: loading,
     dataAction: getMyProfile,
     url: `${process.env.REACT_APP_API_URL}/api/profile/me`,
     stateSlice: "myProfile",
-    dispatch
+    dispatch,
   };
   api(options);
 };
 
-export const updateProfileAsync = payload => async dispatch => {
+export const updateProfileAsync = (payload) => async (dispatch) => {
   const options = {
     loadingAction: loading,
     dataAction: updateProfile,
@@ -81,12 +94,12 @@ export const updateProfileAsync = payload => async dispatch => {
     url: `${process.env.REACT_APP_API_URL}/api/profile`,
     payload,
     stateSlice: "myProfile",
-    dispatch
+    dispatch,
   };
   api(options);
 };
 
-export const addExperienceAsync = payload => async dispatch => {
+export const addExperienceAsync = (payload) => async (dispatch) => {
   const options = {
     loadingAction: loading,
     dataAction: addExperience,
@@ -94,7 +107,22 @@ export const addExperienceAsync = payload => async dispatch => {
     url: `${process.env.REACT_APP_API_URL}/api/profile/experience`,
     payload,
     stateSlice: "myProfile",
-    dispatch
+    dispatch,
+  };
+  api(options);
+};
+
+export const editExperienceAsync = ({ _id, ...payload }) => async (
+  dispatch
+) => {
+  const options = {
+    loadingAction: loading,
+    dataAction: editExperience,
+    method: "PUT",
+    url: `${process.env.REACT_APP_API_URL}/api/profile/experience/${_id}`,
+    payload,
+    stateSlice: "myProfile",
+    dispatch,
   };
   api(options);
 };
