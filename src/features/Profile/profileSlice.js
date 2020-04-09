@@ -39,11 +39,28 @@ const profileSlice = createSlice({
         state.isLoading = false;
         state.myProfile = myProfile;
       }
+    },
+    addExperience(state, action) {
+      const {
+        payload: { error, errorData, myProfile }
+      } = action;
+      if (error) {
+        state.error = errorData;
+        state.isLoading = false;
+      } else {
+        state.isLoading = false;
+        state.myProfile = myProfile;
+      }
     }
   }
 });
 
-export const { loading, getMyProfile, updateProfile } = profileSlice.actions;
+export const {
+  loading,
+  getMyProfile,
+  updateProfile,
+  addExperience
+} = profileSlice.actions;
 
 export const getMyProfileAsync = () => dispatch => {
   const options = {
@@ -62,6 +79,19 @@ export const updateProfileAsync = payload => async dispatch => {
     dataAction: updateProfile,
     method: "POST",
     url: `${process.env.REACT_APP_API_URL}/api/profile`,
+    payload,
+    stateSlice: "myProfile",
+    dispatch
+  };
+  api(options);
+};
+
+export const addExperienceAsync = payload => async dispatch => {
+  const options = {
+    loadingAction: loading,
+    dataAction: addExperience,
+    method: "POST",
+    url: `${process.env.REACT_APP_API_URL}/api/profile/experience`,
     payload,
     stateSlice: "myProfile",
     dispatch
