@@ -35,6 +35,7 @@ const Dashboard = () => {
   const [redirectToEditProfile, toggleEditProfile] = useState(false);
   const [redirectToAddExperience, toggleAddExperience] = useState(false);
   const [experienceId, setEditExperience] = useState();
+  const [redirectToAddEducation, toggleAddEducation] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -49,6 +50,9 @@ const Dashboard = () => {
 
   if (experienceId)
     return <Redirect to={`/profile/me/edit-experience/${experienceId}`} />;
+
+  if (redirectToAddEducation)
+    return <Redirect to="/profile/me/add-education" />;
 
   const { experience, education, user } = profile;
 
@@ -71,7 +75,7 @@ const Dashboard = () => {
         <Button onClick={() => toggleAddExperience(true)}>
           Add Experience
         </Button>
-        <Button>Add Education</Button>
+        <Button onClick={() => toggleAddEducation(true)}>Add Education</Button>
       </div>
       <div>
         <h4>Experience Credentials</h4>

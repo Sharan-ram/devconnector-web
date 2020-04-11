@@ -10,9 +10,9 @@ import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "TITLE":
-    case "COMPANY":
-    case "LOCATION":
+    case "SCHOOL":
+    case "DEGREE":
+    case "FIELDOFSTUDY":
     case "DESCRIPTION":
     case "FROM":
     case "TO":
@@ -23,54 +23,30 @@ const reducer = (state, action) => {
   }
 };
 
-const getInitialState = ({ type, experience }) => {
+const getInitialState = ({ type }) => {
   if (type === "add") {
     return {
-      title: "",
-      company: "",
-      location: "",
+      school: "",
+      degree: "",
+      fieldofstudy: "",
       description: "",
       from: moment(),
       to: undefined,
       current: false,
     };
   }
-  const {
-    title,
-    company,
-    location,
-    description,
-    from,
-    to,
-    current,
-  } = experience;
-  return {
-    title,
-    company,
-    location,
-    description,
-    from: moment(from),
-    to: to && moment(to),
-    current,
-  };
 };
 
-const ExperienceForm = ({
-  type,
-  dispatchFunction,
-  experience,
-  deleteExperience,
-}) => {
+const EducationForm = ({ type, dispatchFunction }) => {
   const [
-    { title, company, location, description, from, to, current },
+    { school, degree, fieldofstudy, from, to, current, description },
     dispatch,
-  ] = useReducer(reducer, getInitialState({ type, experience }));
-  const submitExperience = () => {
+  ] = useReducer(reducer, getInitialState({ type }));
+  const submitEducation = () => {
     dispatchFunction({
-      _id: experience?._id,
-      title,
-      company,
-      location,
+      school,
+      degree,
+      fieldofstudy,
       description,
       from: from.toISOString(),
       to: to?.toISOString(),
@@ -82,28 +58,30 @@ const ExperienceForm = ({
     <div>
       <div>
         <TextField
-          label="Job Title"
-          value={title}
-          onChange={(e) => dispatch({ type: "TITLE", payload: e.target.value })}
-          required
-        />
-      </div>
-      <div>
-        <TextField
-          label="Company"
-          value={company}
+          label="School or Bootcamp"
+          value={school}
           onChange={(e) =>
-            dispatch({ type: "COMPANY", payload: e.target.value })
+            dispatch({ type: "SCHOOL", payload: e.target.value })
           }
           required
         />
       </div>
       <div>
         <TextField
-          label="Location"
-          value={location}
+          label="Degree or Certificate"
+          value={degree}
           onChange={(e) =>
-            dispatch({ type: "LOCATION", payload: e.target.value })
+            dispatch({ type: "DEGREE", payload: e.target.value })
+          }
+          required
+        />
+      </div>
+      <div>
+        <TextField
+          label="Field of Study"
+          value={fieldofstudy}
+          onChange={(e) =>
+            dispatch({ type: "FIELDOFSTUDY", payload: e.target.value })
           }
         />
       </div>
@@ -150,19 +128,19 @@ const ExperienceForm = ({
           onChange={(e) =>
             dispatch({ type: "DESCRIPTION", payload: e.target.value })
           }
-          placeholder="Job Description"
+          placeholder="Program Description"
         />
       </div>
       <div>
-        <Button onClick={submitExperience}>Submit</Button>
-        {type === "edit" && (
+        <Button onClick={submitEducation}>Submit</Button>
+        {/* {type === "edit" && (
           <Button onClick={() => deleteExperience(experience._id)}>
             Delete
           </Button>
-        )}
+        )} */}
       </div>
     </div>
   );
 };
 
-export default ExperienceForm;
+export default EducationForm;
