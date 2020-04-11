@@ -88,6 +88,30 @@ const profileSlice = createSlice({
         state.myProfile = myProfile;
       }
     },
+    editEducation(state, action) {
+      const {
+        payload: { error, errorData, myProfile },
+      } = action;
+      if (error) {
+        state.error = errorData;
+        state.isLoading = false;
+      } else {
+        state.isLoading = false;
+        state.myProfile = myProfile;
+      }
+    },
+    deleteEducation(state, action) {
+      const {
+        payload: { error, errorData, myProfile },
+      } = action;
+      if (error) {
+        state.error = errorData;
+        state.isLoading = false;
+      } else {
+        state.isLoading = false;
+        state.myProfile = myProfile;
+      }
+    },
   },
 });
 
@@ -99,6 +123,8 @@ export const {
   editExperience,
   deleteExperience,
   addEducation,
+  editEducation,
+  deleteEducation,
 } = profileSlice.actions;
 
 export const getMyProfileAsync = () => (dispatch) => {
@@ -172,6 +198,31 @@ export const addEducationAsync = (payload) => async (dispatch) => {
     method: "POST",
     url: `${process.env.REACT_APP_API_URL}/api/profile/education`,
     payload,
+    stateSlice: "myProfile",
+    dispatch,
+  };
+  api(options);
+};
+
+export const editEducationAsync = ({ _id, ...payload }) => async (dispatch) => {
+  const options = {
+    loadingAction: loading,
+    dataAction: editEducation,
+    method: "PUT",
+    url: `${process.env.REACT_APP_API_URL}/api/profile/education/${_id}`,
+    payload,
+    stateSlice: "myProfile",
+    dispatch,
+  };
+  api(options);
+};
+
+export const deleteEducationAsync = (id) => async (dispatch) => {
+  const options = {
+    loadingAction: loading,
+    dataAction: deleteEducation,
+    method: "DELETE",
+    url: `${process.env.REACT_APP_API_URL}/api/profile/education/${id}`,
     stateSlice: "myProfile",
     dispatch,
   };

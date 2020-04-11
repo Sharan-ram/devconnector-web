@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from "react";
+import React, { useReducer } from "react";
 import moment from "moment";
 import { DatePicker } from "@material-ui/pickers";
 
@@ -23,7 +23,7 @@ const reducer = (state, action) => {
   }
 };
 
-const getInitialState = ({ type }) => {
+const getInitialState = ({ type, education }) => {
   if (type === "add") {
     return {
       school: "",
@@ -35,15 +35,39 @@ const getInitialState = ({ type }) => {
       current: false,
     };
   }
+  const {
+    school,
+    degree,
+    fieldofstudy,
+    description,
+    from,
+    to,
+    current,
+  } = education;
+  return {
+    school,
+    degree,
+    fieldofstudy,
+    description,
+    from: moment(from),
+    to: to && moment(to),
+    current,
+  };
 };
 
-const EducationForm = ({ type, dispatchFunction }) => {
+const EducationForm = ({
+  type,
+  dispatchFunction,
+  education,
+  deleteEducation,
+}) => {
   const [
     { school, degree, fieldofstudy, from, to, current, description },
     dispatch,
-  ] = useReducer(reducer, getInitialState({ type }));
+  ] = useReducer(reducer, getInitialState({ type, education }));
   const submitEducation = () => {
     dispatchFunction({
+      _id: education?._id,
       school,
       degree,
       fieldofstudy,
@@ -133,11 +157,9 @@ const EducationForm = ({ type, dispatchFunction }) => {
       </div>
       <div>
         <Button onClick={submitEducation}>Submit</Button>
-        {/* {type === "edit" && (
-          <Button onClick={() => deleteExperience(experience._id)}>
-            Delete
-          </Button>
-        )} */}
+        {type === "edit" && (
+          <Button onClick={() => deleteEducation(education._id)}>Delete</Button>
+        )}
       </div>
     </div>
   );
