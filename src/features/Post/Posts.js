@@ -9,7 +9,11 @@ import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { getAllPostsAsync, createPostAsync } from "./postSlice";
+import {
+  getAllPostsAsync,
+  createPostAsync,
+  handleLikeOrUnlikeAsync,
+} from "./postSlice";
 import useMyProfile from "../../hooks/useMyProfile";
 
 const useStyle = makeStyles({
@@ -53,6 +57,16 @@ const Posts = () => {
     return `You and ${likeCount} others like this`;
   };
 
+  const handleLikeOrUnlike = (postId, hasUserLiked) => {
+    let url;
+    if (hasUserLiked) {
+      url = `${process.env.REACT_APP_API_URL}/api/posts/${postId}/unlike`;
+    } else {
+      url = `${process.env.REACT_APP_API_URL}/api/posts/${postId}/like`;
+    }
+    dispatch(handleLikeOrUnlikeAsync({ url, user: profile.user._id }));
+  };
+
   return (
     <div>
       <h3>Welcome to the community</h3>
@@ -89,7 +103,9 @@ const Posts = () => {
                     </Typography>
                   </div>
                   <div>
-                    <Button>
+                    <Button
+                      onClick={() => handleLikeOrUnlike(_id, hasUserLiked)}
+                    >
                       <Like className={hasUserLiked && classes.like} />
                     </Button>
                     {likes.length !== 0

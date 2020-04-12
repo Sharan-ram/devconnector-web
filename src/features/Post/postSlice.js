@@ -39,10 +39,30 @@ const postSlice = createSlice({
           state.posts === null ? [newPost] : [newPost, ...state.posts];
       }
     },
+    likeOrUnlike(state, action) {
+      const {
+        payload: { error, errorData, post },
+      } = action;
+      if (error) {
+        state.error = errorData;
+        state.isLoading = false;
+      } else {
+        state.isLoading = false;
+        const postIndex = state.posts.findIndex(
+          (statePost) => statePost._id === post._id
+        );
+        state.posts[postIndex] = post;
+      }
+    },
   },
 });
 
-export const { loading, getAllPosts, createPost } = postSlice.actions;
+export const {
+  loading,
+  getAllPosts,
+  createPost,
+  likeOrUnlike,
+} = postSlice.actions;
 
 export const getAllPostsAsync = () => (dispatch) => {
   const options = {
@@ -62,6 +82,19 @@ export const createPostAsync = (payload) => (dispatch) => {
     method: "POST",
     url: `${process.env.REACT_APP_API_URL}/api/posts`,
     stateSlice: "newPost",
+    payload,
+    dispatch,
+  };
+  api(options);
+};
+
+export const handleLikeOrUnlikeAsync = ({ url, ...payload }) => (dispatch) => {
+  const options = {
+    loadingAction: loading,
+    dataAction: likeOrUnlike,
+    method: "PUT",
+    url,
+    stateSlice: "post",
     payload,
     dispatch,
   };
