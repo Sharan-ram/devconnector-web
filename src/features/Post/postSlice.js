@@ -79,6 +79,18 @@ const postSlice = createSlice({
         state.post = post;
       }
     },
+    deleteComment(state, action) {
+      const {
+        payload: { error, errorData, post },
+      } = action;
+      if (error) {
+        state.error = errorData;
+        state.isLoading = false;
+      } else {
+        state.isLoading = false;
+        state.post = post;
+      }
+    },
   },
 });
 
@@ -89,6 +101,7 @@ export const {
   likeOrUnlike,
   getPostById,
   addComment,
+  deleteComment,
 } = postSlice.actions;
 
 export const getAllPostsAsync = () => (dispatch) => {
@@ -147,6 +160,18 @@ export const addCommentAsync = ({ postId, ...payload }) => (dispatch) => {
     url: `${process.env.REACT_APP_API_URL}/api/posts/${postId}/comment`,
     stateSlice: "post",
     payload,
+    dispatch,
+  };
+  api(options);
+};
+
+export const deleteCommentAsync = ({ postId, commentId }) => (dispatch) => {
+  const options = {
+    loadingAction: loading,
+    dataAction: deleteComment,
+    method: "DELETE",
+    url: `${process.env.REACT_APP_API_URL}/api/posts/${postId}/comment/${commentId}`,
+    stateSlice: "post",
     dispatch,
   };
   api(options);
