@@ -20,6 +20,8 @@ const reducer = (state, action) => {
       return Object.assign({}, state, {
         [action.type.toLowerCase()]: action.payload,
       });
+    default:
+      return state;
   }
 };
 

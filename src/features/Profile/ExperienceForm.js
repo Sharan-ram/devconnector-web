@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from "react";
+import React, { useReducer } from "react";
 import moment from "moment";
 import { DatePicker } from "@material-ui/pickers";
 
@@ -20,6 +20,8 @@ const reducer = (state, action) => {
       return Object.assign({}, state, {
         [action.type.toLowerCase()]: action.payload,
       });
+    default:
+      return state;
   }
 };
 
