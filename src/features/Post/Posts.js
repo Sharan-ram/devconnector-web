@@ -10,11 +10,15 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { getAllPostsAsync, createPostAsync } from "./postSlice";
+import useMyProfile from "../../hooks/useMyProfile";
 
 const useStyle = makeStyles({
   post: {
     display: "grid",
     gridTemplateColumns: "1fr 4fr",
+  },
+  like: {
+    fill: "#3b5998",
   },
 });
 
@@ -25,6 +29,7 @@ const Posts = () => {
   const [postId, redirectToPost] = useState();
 
   const { isLoading, posts } = useSelector((state) => state.post);
+  const [isProfileLoading, profile] = useMyProfile();
 
   const dispatch = useDispatch();
 
@@ -36,8 +41,17 @@ const Posts = () => {
     dispatch(createPostAsync({ text: post }));
   };
 
-  if (isLoading) return <div>Loading profile...</div>;
+  if (isLoading || isProfileLoading) return <div>Loading profile...</div>;
+  if (profile === null) return null;
+
   if (postId) return <Redirect to={`/posts/${postId}`} />;
+
+  const getLikeCountText = (hasUserLiked, likeCount) => {
+    if (!hasUserLiked) return likeCount;
+    if (likeCount === 1) return "You like this";
+    if (likeCount === 2) return "You and one other like this";
+    return `You and ${likeCount} others like this`;
+  };
 
   return (
     <div>
@@ -58,6 +72,10 @@ const Posts = () => {
         {posts !== null ? (
           posts.map((post) => {
             const { likes, _id, name, text, date, comments } = post;
+            const hasUserLiked = likes.find(
+              (like) => like.user === profile.user._id
+            );
+
             return (
               <div key={_id} className={classes.post}>
                 <div>{name}</div>
@@ -72,12 +90,14 @@ const Posts = () => {
                   </div>
                   <div>
                     <Button>
-                      <Like />
-                      {likes.length === 0 ? "" : likes.length}
+                      <Like className={hasUserLiked && classes.like} />
                     </Button>
+                    {likes.length !== 0
+                      ? getLikeCountText(hasUserLiked, likes.length)
+                      : ""}
                     <Button onClick={() => redirectToPost(_id)}>
                       Discussion
-                      {comments.length === 0 ? "" : comments.length}
+                      {comments.length === 0 ? "" : `(${comments.length})`}
                     </Button>
                     <Button>Delete Post</Button>
                   </div>
