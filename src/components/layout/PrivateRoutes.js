@@ -8,7 +8,7 @@ import {
   AddEducation,
   EditEducation,
 } from "../../features/Profile";
-import { Posts } from "../../features/Post";
+import { Posts, EditPost } from "../../features/Post";
 import Dashboard from "../../features/Dashboard";
 
 const PrivateRoutes = ({ match: { path } }) => {
@@ -36,6 +36,8 @@ const PrivateRoutes = ({ match: { path } }) => {
         component={EditEducation}
       />
       <Route exact path={`${path}posts`} component={Posts} />
+      <Route exact path={`${path}posts/:id`} component={EditPost} />
+
       <Route component={Dashboard} />
     </Switch>
   );

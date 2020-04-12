@@ -15,10 +15,10 @@ const useStyles = makeStyles({
     alignItems: "center",
     background: "#343a40",
     paddingLeft: "2rem",
-    paddingRight: "2rem"
+    paddingRight: "2rem",
   },
   logoWrapperDiv: {
-    justifySelf: "start"
+    justifySelf: "start",
   },
   logoWrapper: {
     display: "grid",
@@ -26,28 +26,28 @@ const useStyles = makeStyles({
     alignItems: "center",
     gridColumnGap: "0.2em",
     fontWeight: "bold",
-    fontSize: "20px"
+    fontSize: "20px",
   },
   logo: {
-    display: "grid"
+    display: "grid",
   },
   navLinks: {
     justifySelf: "end",
     display: "grid",
     gridTemplateColumns: "1fr 1fr 1fr 1fr",
-    justifyItems: "center"
+    justifyItems: "center",
   },
   developerLink: {
     justifySelf: "end",
     display: "grid",
-    gridTemplateColumns: "1fr"
-  }
+    gridTemplateColumns: "1fr",
+  },
 });
 
 const TopNavigation = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector(state => state.auth);
+  const { isAuthenticated } = useSelector((state) => state.auth);
   return (
     <AppBar className={classes.appBar}>
       <div className={classes.logoWrapperDiv}>
@@ -67,7 +67,7 @@ const TopNavigation = () => {
         {isAuthenticated && (
           <>
             <div>
-              <NavLink to="/posts/all">Posts</NavLink>
+              <NavLink to="/posts">Posts</NavLink>
             </div>
             <div>
               <NavLink to="/">Dashboard</NavLink>
