@@ -35,7 +35,7 @@ const PrivateRoutes = ({ match: { path } }) => {
         path={`${path}profile/me/edit-education/:id`}
         component={EditEducation}
       />
-      <Route exact path={`${path}posts/all`} component={Posts} />
+      <Route exact path={`${path}posts`} component={Posts} />
       <Route component={Dashboard} />
     </Switch>
   );
