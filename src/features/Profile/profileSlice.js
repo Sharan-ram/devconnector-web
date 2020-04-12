@@ -9,6 +9,19 @@ const initialState = {
   error: null,
 };
 
+const updateProfileData = (state, action) => {
+  const {
+    payload: { error, errorData, myProfile },
+  } = action;
+  if (error) {
+    state.error = errorData;
+    state.isLoading = false;
+  } else {
+    state.isLoading = false;
+    state.myProfile = myProfile;
+  }
+};
+
 const profileSlice = createSlice({
   name: "profile",
   initialState,
@@ -17,100 +30,28 @@ const profileSlice = createSlice({
       state.isLoading = true;
     },
     getMyProfile(state, action) {
-      const {
-        payload: { error, errorData, myProfile },
-      } = action;
-      if (error) {
-        state.error = errorData;
-        state.isLoading = false;
-      } else {
-        state.isLoading = false;
-        state.myProfile = myProfile;
-      }
+      updateProfileData(state, action);
     },
     updateProfile(state, action) {
-      const {
-        payload: { error, errorData, myProfile },
-      } = action;
-      if (error) {
-        state.error = errorData;
-        state.isLoading = false;
-      } else {
-        state.isLoading = false;
-        state.myProfile = myProfile;
-      }
+      updateProfileData(state, action);
     },
     addExperience(state, action) {
-      const {
-        payload: { error, errorData, myProfile },
-      } = action;
-      if (error) {
-        state.error = errorData;
-        state.isLoading = false;
-      } else {
-        state.isLoading = false;
-        state.myProfile = myProfile;
-      }
+      updateProfileData(state, action);
     },
     editExperience(state, action) {
-      const {
-        payload: { error, errorData, myProfile },
-      } = action;
-      if (error) {
-        state.error = errorData;
-        state.isLoading = false;
-      } else {
-        state.isLoading = false;
-        state.myProfile = myProfile;
-      }
+      updateProfileData(state, action);
     },
     deleteExperience(state, action) {
-      const {
-        payload: { error, errorData, myProfile },
-      } = action;
-      if (error) {
-        state.error = errorData;
-        state.isLoading = false;
-      } else {
-        state.isLoading = false;
-        state.myProfile = myProfile;
-      }
+      updateProfileData(state, action);
     },
     addEducation(state, action) {
-      const {
-        payload: { error, errorData, myProfile },
-      } = action;
-      if (error) {
-        state.error = errorData;
-        state.isLoading = false;
-      } else {
-        state.isLoading = false;
-        state.myProfile = myProfile;
-      }
+      updateProfileData(state, action);
     },
     editEducation(state, action) {
-      const {
-        payload: { error, errorData, myProfile },
-      } = action;
-      if (error) {
-        state.error = errorData;
-        state.isLoading = false;
-      } else {
-        state.isLoading = false;
-        state.myProfile = myProfile;
-      }
+      updateProfileData(state, action);
     },
     deleteEducation(state, action) {
-      const {
-        payload: { error, errorData, myProfile },
-      } = action;
-      if (error) {
-        state.error = errorData;
-        state.isLoading = false;
-      } else {
-        state.isLoading = false;
-        state.myProfile = myProfile;
-      }
+      updateProfileData(state, action);
     },
   },
 });
