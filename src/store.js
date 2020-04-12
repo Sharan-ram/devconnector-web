@@ -1,10 +1,12 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import authSlice, { login as loginAction } from "./auth/authSlice";
 import profileSlice from "./features/Profile/profileSlice";
+import postSlice from "./features/Post/postSlice";
 
 const appReducer = combineReducers({
   auth: authSlice,
-  profile: profileSlice
+  profile: profileSlice,
+  post: postSlice,
 });
 
 const rootReducer = (state, action) => {
@@ -17,7 +19,7 @@ const rootReducer = (state, action) => {
 };
 
 const store = configureStore({
-  reducer: rootReducer
+  reducer: rootReducer,
 });
 
 const jwt = localStorage.getItem("jwt");
