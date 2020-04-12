@@ -14,7 +14,23 @@ import { updateProfileAsync } from "./profileSlice";
 
 import useMyProfile from "../../hooks/useMyProfile";
 
-const getInitialState = profile => {
+const getInitialState = (profile) => {
+  if (profile === null) {
+    return {
+      status: "",
+      company: "",
+      website: "",
+      location: "",
+      skills: "",
+      githubusername: "",
+      bio: "",
+      youtube: "",
+      twitter: "",
+      facebook: "",
+      instagram: "",
+      linkedin: "",
+    };
+  }
   const {
     status = "",
     company = "",
@@ -23,14 +39,14 @@ const getInitialState = profile => {
     skills = "",
     githubusername = "",
     bio = "",
-    social = {}
+    social = {},
   } = profile;
   const {
     youtube = "",
     twitter = "",
     facebook = "",
     instagram = "",
-    linkedin = ""
+    linkedin = "",
   } = social;
   return {
     status,
@@ -44,7 +60,7 @@ const getInitialState = profile => {
     twitter,
     facebook,
     instagram,
-    linkedin
+    linkedin,
   };
 };
 
@@ -63,7 +79,7 @@ const reducer = (state, action) => {
     case "INSTAGRAM":
     case "LINKEDIN":
       return Object.assign({}, state, {
-        [action.type.toLowerCase()]: action.payload
+        [action.type.toLowerCase()]: action.payload,
       });
     default:
       return state;
@@ -86,9 +102,9 @@ const Form = ({ profile, updateProfile }) => {
       twitter,
       facebook,
       instagram,
-      linkedin
+      linkedin,
     },
-    dispatch
+    dispatch,
   ] = useReducer(reducer, getInitialState(profile));
 
   const callUpdateProfile = () => {
@@ -105,8 +121,8 @@ const Form = ({ profile, updateProfile }) => {
         twitter,
         facebook,
         instagram,
-        linkedin
-      }
+        linkedin,
+      },
     };
     updateProfile(profile);
   };
@@ -118,7 +134,7 @@ const Form = ({ profile, updateProfile }) => {
           <InputLabel>Select Professional Status</InputLabel>
           <Select
             value={status}
-            onChange={e =>
+            onChange={(e) =>
               dispatch({ type: "STATUS", payload: e.target.value })
             }
           >
@@ -142,7 +158,9 @@ const Form = ({ profile, updateProfile }) => {
         <TextField
           label="Company"
           value={company}
-          onChange={e => dispatch({ type: "COMPANY", payload: e.target.value })}
+          onChange={(e) =>
+            dispatch({ type: "COMPANY", payload: e.target.value })
+          }
           helperText="Could be your own company or one you work for"
         />
       </div>
@@ -150,7 +168,9 @@ const Form = ({ profile, updateProfile }) => {
         <TextField
           label="Website"
           value={website}
-          onChange={e => dispatch({ type: "WEBSITE", payload: e.target.value })}
+          onChange={(e) =>
+            dispatch({ type: "WEBSITE", payload: e.target.value })
+          }
           helperText="Could be your own or company website"
         />
       </div>
@@ -158,7 +178,7 @@ const Form = ({ profile, updateProfile }) => {
         <TextField
           label="Location"
           value={location}
-          onChange={e =>
+          onChange={(e) =>
             dispatch({ type: "LOCATION", payload: e.target.value })
           }
           helperText="City and State suggested(eg Boston, MA)"
@@ -168,7 +188,9 @@ const Form = ({ profile, updateProfile }) => {
         <TextField
           label="Skills"
           value={skills}
-          onChange={e => dispatch({ type: "SKILLS", payload: e.target.value })}
+          onChange={(e) =>
+            dispatch({ type: "SKILLS", payload: e.target.value })
+          }
           helperText="Please use comma separated values(eg. HTML, CSS, JAVASCRIPT)"
           required
         />
@@ -177,7 +199,7 @@ const Form = ({ profile, updateProfile }) => {
         <TextField
           label="Github Username"
           value={githubusername}
-          onChange={e =>
+          onChange={(e) =>
             dispatch({ type: "GITHUBUSERNAME", payload: e.target.value })
           }
           helperText="If you want your latest repos and a Github link, include your username"
@@ -187,7 +209,7 @@ const Form = ({ profile, updateProfile }) => {
         <TextareaAutosize
           rowsMin={5}
           value={bio}
-          onChange={e => dispatch({ type: "BIO", payload: e.target.value })}
+          onChange={(e) => dispatch({ type: "BIO", payload: e.target.value })}
           placeholder="Tell us a little about yourself"
         />
       </div>
@@ -204,7 +226,7 @@ const Form = ({ profile, updateProfile }) => {
             <TextField
               label="Youtube"
               value={youtube}
-              onChange={e =>
+              onChange={(e) =>
                 dispatch({ type: "YOUTUBE", payload: e.target.value })
               }
             />
@@ -213,7 +235,7 @@ const Form = ({ profile, updateProfile }) => {
             <TextField
               label="Twitter"
               value={twitter}
-              onChange={e =>
+              onChange={(e) =>
                 dispatch({ type: "TWITTER", payload: e.target.value })
               }
             />
@@ -222,7 +244,7 @@ const Form = ({ profile, updateProfile }) => {
             <TextField
               label="Facebook"
               value={facebook}
-              onChange={e =>
+              onChange={(e) =>
                 dispatch({ type: "FACEBOOK", payload: e.target.value })
               }
             />
@@ -231,7 +253,7 @@ const Form = ({ profile, updateProfile }) => {
             <TextField
               label="Instagram"
               value={instagram}
-              onChange={e =>
+              onChange={(e) =>
                 dispatch({ type: "INSTAGRAM", payload: e.target.value })
               }
             />
@@ -240,7 +262,7 @@ const Form = ({ profile, updateProfile }) => {
             <TextField
               label="LinkedIn"
               value={linkedin}
-              onChange={e =>
+              onChange={(e) =>
                 dispatch({ type: "LINKEDIN", payload: e.target.value })
               }
             />
@@ -260,11 +282,9 @@ const MyProfile = () => {
 
   if (isLoading) return <div>Loading Profile ...</div>;
 
-  const updateProfile = profile => {
+  const updateProfile = (profile) => {
     dispatch(updateProfileAsync(profile));
   };
-
-  if (myProfile === null) return null;
 
   return <Form profile={myProfile} updateProfile={updateProfile} />;
 };

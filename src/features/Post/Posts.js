@@ -115,7 +115,9 @@ const Posts = () => {
                       Discussion
                       {comments.length === 0 ? "" : `(${comments.length})`}
                     </Button>
-                    <Button>Delete Post</Button>
+                    {post.user === profile.user._id && (
+                      <Button>Delete Post</Button>
+                    )}
                   </div>
                 </div>
               </div>
