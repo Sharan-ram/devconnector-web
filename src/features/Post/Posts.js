@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 import moment from "moment";
 
 import Button from "@material-ui/core/Button";
@@ -19,7 +20,10 @@ const useStyle = makeStyles({
 
 const Posts = () => {
   const classes = useStyle();
+
   const [post, setPost] = useState("");
+  const [postId, redirectToPost] = useState();
+
   const { isLoading, posts } = useSelector((state) => state.post);
 
   const dispatch = useDispatch();
@@ -33,6 +37,7 @@ const Posts = () => {
   };
 
   if (isLoading) return <div>Loading profile...</div>;
+  if (postId) return <Redirect to={`/posts/${postId}`} />;
 
   return (
     <div>
@@ -42,7 +47,7 @@ const Posts = () => {
         <TextareaAutosize
           value={post}
           onChange={(e) => setPost(e.target.value)}
-          minRows={6}
+          rowsMin={6}
           placeholder="Create a Post"
         />
         <Button disabled={post === ""} onClick={createPost}>
@@ -52,9 +57,9 @@ const Posts = () => {
       <div>
         {posts !== null ? (
           posts.map((post) => {
-            const { likes, id, name, text, date, comments } = post;
+            const { likes, _id, name, text, date, comments } = post;
             return (
-              <div key={id} className={classes.post}>
+              <div key={_id} className={classes.post}>
                 <div>{name}</div>
                 <div>
                   <div>
@@ -70,7 +75,7 @@ const Posts = () => {
                       <Like />
                       {likes.length === 0 ? "" : likes.length}
                     </Button>
-                    <Button>
+                    <Button onClick={() => redirectToPost(_id)}>
                       Discussion
                       {comments.length === 0 ? "" : comments.length}
                     </Button>
