@@ -5,6 +5,7 @@ const initialState = {
   isLoading: false,
   posts: null,
   error: null,
+  post: null,
 };
 
 const postSlice = createSlice({
@@ -54,6 +55,30 @@ const postSlice = createSlice({
         state.posts[postIndex] = post;
       }
     },
+    getPostById(state, action) {
+      const {
+        payload: { error, errorData, post },
+      } = action;
+      if (error) {
+        state.error = errorData;
+        state.isLoading = false;
+      } else {
+        state.isLoading = false;
+        state.post = post;
+      }
+    },
+    addComment(state, action) {
+      const {
+        payload: { error, errorData, post },
+      } = action;
+      if (error) {
+        state.error = errorData;
+        state.isLoading = false;
+      } else {
+        state.isLoading = false;
+        state.post = post;
+      }
+    },
   },
 });
 
@@ -62,6 +87,8 @@ export const {
   getAllPosts,
   createPost,
   likeOrUnlike,
+  getPostById,
+  addComment,
 } = postSlice.actions;
 
 export const getAllPostsAsync = () => (dispatch) => {
@@ -94,6 +121,30 @@ export const handleLikeOrUnlikeAsync = ({ url, ...payload }) => (dispatch) => {
     dataAction: likeOrUnlike,
     method: "PUT",
     url,
+    stateSlice: "post",
+    payload,
+    dispatch,
+  };
+  api(options);
+};
+
+export const getPostByIdAsync = (postId) => (dispatch) => {
+  const options = {
+    loadingAction: loading,
+    dataAction: getPostById,
+    url: `${process.env.REACT_APP_API_URL}/api/posts/${postId}`,
+    stateSlice: "post",
+    dispatch,
+  };
+  api(options);
+};
+
+export const addCommentAsync = ({ postId, ...payload }) => (dispatch) => {
+  const options = {
+    loadingAction: loading,
+    dataAction: addComment,
+    method: "POST",
+    url: `${process.env.REACT_APP_API_URL}/api/posts/${postId}/comment`,
     stateSlice: "post",
     payload,
     dispatch,
