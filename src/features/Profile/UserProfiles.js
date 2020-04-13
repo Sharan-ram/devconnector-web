@@ -17,7 +17,7 @@ const useStyle = makeStyles({
 });
 
 const UserProfiles = () => {
-  const [profileId, setProfile] = useState();
+  const [userId, setUser] = useState();
   const { isLoading, userProfiles } = useSelector((state) => state.profile);
 
   const classes = useStyle();
@@ -29,7 +29,7 @@ const UserProfiles = () => {
 
   if (isLoading) return <div>Loading...</div>;
   if (userProfiles === null) return null;
-  if (profileId) return <Redirect to={`/users/profiles/${profileId}`} />;
+  if (userId) return <Redirect to={`/users/profiles/${userId}`} />;
 
   return (
     <div>
@@ -55,9 +55,7 @@ const UserProfiles = () => {
                   {location || "No location mentioned"}
                 </Typography>
                 <div>
-                  <Button onClick={() => setProfile(profileId)}>
-                    View Profile
-                  </Button>
+                  <Button onClick={() => setUser(userId)}>View Profile</Button>
                 </div>
               </div>
               <div>
