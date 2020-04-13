@@ -116,6 +116,40 @@ const SingleProfile = ({
         </div>
         <div>
           <h3>Education</h3>
+          {education.map((education) => {
+            const {
+              _id,
+              school,
+              degree,
+              fieldofstudy,
+              from,
+              to,
+              description,
+            } = education;
+            return (
+              <div key={_id}>
+                <h4>{school}</h4>
+                <Typography component="span">{`${moment(from).format(
+                  "DD-MM-YYYY"
+                )} to ${
+                  to ? moment(to).format("DD-MM-YYYY") : "NA"
+                }`}</Typography>
+                <div>
+                  <h5>Degree:</h5>
+                  {degree}
+                </div>
+                <div>
+                  <h5>Field of Study:</h5>
+                  {fieldofstudy ? fieldofstudy : "NA"}
+                </div>
+                <div>
+                  <h5>Description:</h5>
+                  {description ? description : "NA"}
+                </div>
+                <hr />
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
