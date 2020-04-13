@@ -7,6 +7,7 @@ const initialState = {
   myProfile: null,
   userProfiles: null,
   error: null,
+  profile: null,
 };
 
 const updateProfileData = (state, action) => {
@@ -41,6 +42,18 @@ const profileSlice = createSlice({
         state.userProfiles = userProfiles;
       }
     },
+    getProfileByUserId(state, action) {
+      const {
+        payload: { error, errorData, profile },
+      } = action;
+      if (error) {
+        state.error = errorData;
+        state.isLoading = false;
+      } else {
+        state.isLoading = false;
+        state.profile = profile;
+      }
+    },
     getMyProfile(state, action) {
       updateProfileData(state, action);
     },
@@ -71,6 +84,7 @@ const profileSlice = createSlice({
 export const {
   loading,
   getAllProfiles,
+  getProfileByUserId,
   getMyProfile,
   updateProfile,
   addExperience,
@@ -88,6 +102,18 @@ export const getAllProfilesAsync = () => (dispatch) => {
     access: "public",
     url: `${process.env.REACT_APP_API_URL}/api/profile`,
     stateSlice: "userProfiles",
+    dispatch,
+  };
+  api(options);
+};
+
+export const getProfileByUserIdAsync = (id) => (dispatch) => {
+  const options = {
+    loadingAction: loading,
+    dataAction: getProfileByUserId,
+    access: "public",
+    url: `${process.env.REACT_APP_API_URL}/api/profile/user/${id}`,
+    stateSlice: "profile",
     dispatch,
   };
   api(options);
