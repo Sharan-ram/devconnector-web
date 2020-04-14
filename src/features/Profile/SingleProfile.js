@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import moment from "moment";
 
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { getProfileByUserIdAsync } from "./profileSlice";
+import { getProfileByUserIdAsync, getGithubReposAsync } from "./profileSlice";
 
 const useStyle = makeStyles({
   profile: {
@@ -22,6 +23,13 @@ const useStyle = makeStyles({
   experience: {
     border: "1px solid black",
   },
+  githubRepos: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+  },
+  repo: {
+    border: "1px solid black",
+  },
 });
 
 const SingleProfile = ({
@@ -30,7 +38,9 @@ const SingleProfile = ({
   },
 }) => {
   const classes = useStyle();
-  const { isLoading, profile } = useSelector((state) => state.profile);
+  const { isLoading, profile, githubRepos, isGithubReposLoading } = useSelector(
+    (state) => state.profile
+  );
 
   const dispatch = useDispatch();
 
@@ -38,7 +48,15 @@ const SingleProfile = ({
     dispatch(getProfileByUserIdAsync(userId));
   }, [dispatch, userId]);
 
+  const { githubusername } = profile || {};
+  useEffect(() => {
+    if (githubusername) {
+      dispatch(getGithubReposAsync(githubusername));
+    }
+  }, [dispatch, githubusername]);
+
   console.log("profile", profile);
+  console.log("githubRepos", githubRepos);
 
   if (isLoading) return <div>Loading...</div>;
   if (profile === null) return null;
@@ -151,6 +169,26 @@ const SingleProfile = ({
             );
           })}
         </div>
+      </div>
+      <div>
+        <h3>Github repos</h3>
+        {isGithubReposLoading && <div>Loading Github repos</div>}
+        {githubRepos !== null && (
+          <div className={classes.githubRepos}>
+            {githubRepos.map((repo) => {
+              const { id, name, description, language, html_url } = repo;
+              return (
+                <div className={classes.repo} key={id}>
+                  <Link to={{ pathname: html_url }} target="_blank">
+                    {name}
+                  </Link>
+                  <Typography component="p">{description}</Typography>
+                  <Typography component="span">{language}</Typography>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

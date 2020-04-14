@@ -8,6 +8,8 @@ const initialState = {
   userProfiles: null,
   error: null,
   profile: null,
+  isGithubReposLoading: false,
+  githubRepos: null,
 };
 
 const updateProfileData = (state, action) => {
@@ -78,11 +80,27 @@ const profileSlice = createSlice({
     deleteEducation(state, action) {
       updateProfileData(state, action);
     },
+    githubReposLoading(state, _) {
+      state.isGithubReposLoading = false;
+    },
+    getGithubRepos(state, action) {
+      const {
+        payload: { error, errorData, githubRepos },
+      } = action;
+      if (error) {
+        state.isGithubReposLoading = false;
+        state.error = errorData;
+      } else {
+        state.isGithubReposLoading = false;
+        state.githubRepos = githubRepos;
+      }
+    },
   },
 });
 
 export const {
   loading,
+  githubReposLoading,
   getAllProfiles,
   getProfileByUserId,
   getMyProfile,
@@ -93,6 +111,7 @@ export const {
   addEducation,
   editEducation,
   deleteEducation,
+  getGithubRepos,
 } = profileSlice.actions;
 
 export const getAllProfilesAsync = () => (dispatch) => {
@@ -216,6 +235,18 @@ export const deleteEducationAsync = (id) => async (dispatch) => {
     method: "DELETE",
     url: `${process.env.REACT_APP_API_URL}/api/profile/education/${id}`,
     stateSlice: "myProfile",
+    dispatch,
+  };
+  api(options);
+};
+
+export const getGithubReposAsync = (username) => async (dispatch) => {
+  const options = {
+    loadingAction: githubReposLoading,
+    dataAction: getGithubRepos,
+    access: "public",
+    url: `${process.env.REACT_APP_API_URL}/api/profile/github/${username}`,
+    stateSlice: "githubRepos",
     dispatch,
   };
   api(options);
