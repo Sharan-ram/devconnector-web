@@ -7,21 +7,23 @@ import { editExperienceAsync, deleteExperienceAsync } from "./profileSlice";
 import ExperienceForm from "./ExperienceForm";
 
 const EditExperience = ({
-  match: {
-    params: { id },
+  history: {
+    location: { state },
   },
 }) => {
-  const [isLoading, profile] = useMyProfile();
   const [redirectToDashboard, setRedirect] = useState(false);
+  const [isLoading, profile] = useMyProfile(state);
   const dispatch = useDispatch();
+
+  if (!state) return <Redirect to="/" />;
 
   if (isLoading) return <div>Loading profile...</div>;
 
   if (profile === null) return null;
 
-  if (redirectToDashboard) return <Redirect to="/" />;
-
-  const experience = profile.experience.find((exp) => exp._id === id);
+  const { experienceId } = state;
+  const experience = profile.experience.find((exp) => exp._id === experienceId);
+  if (!experience || redirectToDashboard) return <Redirect to="/" />;
 
   const editExperience = (experience) => {
     dispatch(editExperienceAsync(experience));

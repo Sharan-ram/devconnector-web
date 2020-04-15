@@ -15,7 +15,6 @@ import moment from "moment";
 
 const Dashboard = () => {
   const [isLoading, profile] = useMyProfile();
-  const [experienceId, setEditExperience] = useState();
   const [educationId, setEditEducation] = useState();
 
   const history = useHistory();
@@ -23,9 +22,6 @@ const Dashboard = () => {
   if (isLoading) return <div>Loading Profile...</div>;
 
   if (profile === null) return null;
-
-  if (experienceId)
-    return <Redirect to={`/profile/me/edit-experience/${experienceId}`} />;
 
   if (educationId)
     return <Redirect to={`/profile/me/edit-education/${educationId}`} />;
@@ -93,7 +89,17 @@ const Dashboard = () => {
                       {current === true ? "Present" : toDate}
                     </TableCell>
                     <TableCell>
-                      <Button onClick={() => setEditExperience(_id)}>
+                      <Button
+                        onClick={() =>
+                          history.push({
+                            pathname: `/profile/me/edit-experience/${_id}`,
+                            state: {
+                              experienceId: _id,
+                              profile,
+                            },
+                          })
+                        }
+                      >
                         Edit
                       </Button>
                     </TableCell>
