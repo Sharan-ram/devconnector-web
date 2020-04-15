@@ -10,7 +10,7 @@ const useMyProfile = (historyState) => {
     if (!historyState) {
       dispatch(getMyProfileAsync());
     }
-  }, [dispatch]);
+  }, [dispatch, historyState]);
 
   if (historyState?.profile !== undefined) {
     return [false, historyState.profile];

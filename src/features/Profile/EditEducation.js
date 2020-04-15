@@ -7,21 +7,23 @@ import { editEducationAsync, deleteEducationAsync } from "./profileSlice";
 import EducationForm from "./EducationForm";
 
 const EditEducation = ({
-  match: {
-    params: { id },
+  history: {
+    location: { state },
   },
 }) => {
-  const [isLoading, profile] = useMyProfile();
+  const [isLoading, profile] = useMyProfile(state);
   const [redirectToDashboard, setRedirect] = useState(false);
   const dispatch = useDispatch();
+
+  if (!state) return <Redirect to="/" />;
 
   if (isLoading) return <div>Loading profile...</div>;
 
   if (profile === null) return null;
 
-  if (redirectToDashboard) return <Redirect to="/" />;
-
-  const education = profile.education.find((exp) => exp._id === id);
+  const { educationId } = state;
+  const education = profile.education.find((edu) => edu._id === educationId);
+  if (!education || redirectToDashboard) return <Redirect to="/" />;
 
   const editEducation = (education) => {
     dispatch(editEducationAsync(education));
