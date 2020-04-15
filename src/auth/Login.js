@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     display: "grid",
-    gridTemplateRows: "1fr 1fr 1fr",
     gridRowGap: "1em",
   },
   icon: {
@@ -32,9 +31,6 @@ const useStyles = makeStyles((theme) => ({
   },
   signInText: {
     fontSize: "1.5em",
-  },
-  textField: {
-    width: "100%",
   },
   button: {
     width: "10%",
@@ -51,6 +47,13 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+
+  const getErrorText = () => {
+    // If there was an error in the store before landing this page, we dont want
+    // to show the error here
+    if (email === "") return "";
+    return error?.msg;
+  };
 
   const loginUser = () => {
     dispatch(
@@ -76,7 +79,7 @@ const Login = () => {
             label="Email"
             onChange={(e) => setEmail(e.target.value)}
             variant="outlined"
-            className={classes.textField}
+            fullWidth
           />
         </div>
         <div>
@@ -85,10 +88,10 @@ const Login = () => {
             type="password"
             onChange={(e) => setPassword(e.target.value)}
             variant="outlined"
-            className={classes.textField}
+            fullWidth
           />
         </div>
-        <FormErrors text={error?.msg} />
+        <FormErrors text={getErrorText()} />
         <Button
           disabled={!email || !password}
           variant="contained"
