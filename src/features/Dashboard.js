@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 
 import Button from "@material-ui/core/Button";
 import Table from "@material-ui/core/Table";
@@ -15,17 +15,16 @@ import moment from "moment";
 
 const Dashboard = () => {
   const [isLoading, profile] = useMyProfile();
-  const [redirectToEditProfile, toggleEditProfile] = useState(false);
   const [redirectToAddExperience, toggleAddExperience] = useState(false);
   const [experienceId, setEditExperience] = useState();
   const [redirectToAddEducation, toggleAddEducation] = useState(false);
   const [educationId, setEditEducation] = useState();
 
+  const history = useHistory();
+
   if (isLoading) return <div>Loading Profile...</div>;
 
   if (profile === null) return null;
-
-  if (redirectToEditProfile) return <Redirect to="/profile/me" />;
 
   if (redirectToAddExperience)
     return <Redirect to="/profile/me/add-experience" />;
@@ -62,7 +61,13 @@ const Dashboard = () => {
     <div>
       <h3>Welcome {user.name}</h3>
       <div>
-        <Button onClick={() => toggleEditProfile(true)}>Edit Profile</Button>
+        <Button
+          onClick={() =>
+            history.push({ pathname: "/profile/me", state: { profile } })
+          }
+        >
+          Edit Profile
+        </Button>
         <Button onClick={() => toggleAddExperience(true)}>
           Add Experience
         </Button>
