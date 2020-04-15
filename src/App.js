@@ -10,6 +10,8 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       main: "#17a2b8",
+      danger: "#dc3545",
+      lightColor: "#f4f4f4",
     },
   },
 });

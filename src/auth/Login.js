@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import Button from "@material-ui/core/Button";
@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/styles";
 
 import { loginAsync } from "./authSlice";
+import { FormErrors } from "../components/ui";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -45,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = () => {
+  const { error } = useSelector((state) => state.auth);
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -86,6 +88,7 @@ const Login = () => {
             className={classes.textField}
           />
         </div>
+        <FormErrors text={error?.msg} />
         <Button
           disabled={!email || !password}
           variant="contained"
