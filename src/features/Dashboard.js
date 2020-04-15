@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Redirect, useHistory } from "react-router-dom";
+import React from "react";
+import { useHistory } from "react-router-dom";
 
 import Button from "@material-ui/core/Button";
 import Table from "@material-ui/core/Table";
@@ -15,16 +15,12 @@ import moment from "moment";
 
 const Dashboard = () => {
   const [isLoading, profile] = useMyProfile();
-  const [educationId, setEditEducation] = useState();
 
   const history = useHistory();
 
   if (isLoading) return <div>Loading Profile...</div>;
 
   if (profile === null) return null;
-
-  if (educationId)
-    return <Redirect to={`/profile/me/edit-education/${educationId}`} />;
 
   const { experience, education, user } = profile;
 
@@ -136,7 +132,17 @@ const Dashboard = () => {
                       {current === true ? "Present" : toDate}
                     </TableCell>
                     <TableCell>
-                      <Button onClick={() => setEditEducation(_id)}>
+                      <Button
+                        onClick={() =>
+                          history.push({
+                            pathname: `/profile/me/edit-education/${_id}`,
+                            state: {
+                              educationId: _id,
+                              profile,
+                            },
+                          })
+                        }
+                      >
                         Edit
                       </Button>
                     </TableCell>
