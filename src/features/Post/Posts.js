@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import moment from "moment";
 
 import Button from "@material-ui/core/Button";
@@ -30,11 +30,11 @@ const Posts = () => {
   const classes = useStyle();
 
   const [post, setPost] = useState("");
-  const [postId, redirectToPost] = useState();
 
   const { isLoading, posts } = useSelector((state) => state.post);
   const [isProfileLoading, profile] = useMyProfile();
 
+  const history = useHistory();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -47,8 +47,6 @@ const Posts = () => {
 
   if (isLoading || isProfileLoading) return <div>Loading profile...</div>;
   if (profile === null) return null;
-
-  if (postId) return <Redirect to={`/posts/${postId}`} />;
 
   const getLikeCountText = (hasUserLiked, likeCount) => {
     if (!hasUserLiked) return likeCount;
@@ -111,7 +109,18 @@ const Posts = () => {
                     {likes.length !== 0
                       ? getLikeCountText(hasUserLiked, likes.length)
                       : ""}
-                    <Button onClick={() => redirectToPost(_id)}>
+                    <Button
+                      onClick={() =>
+                        history.push({
+                          pathname: `/posts/${_id}`,
+                          state: {
+                            post,
+                            profile,
+                            postId: _id,
+                          },
+                        })
+                      }
+                    >
                       Discussion
                       {comments.length === 0 ? "" : `(${comments.length})`}
                     </Button>

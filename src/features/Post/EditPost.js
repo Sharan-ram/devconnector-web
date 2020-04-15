@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { withRouter } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import moment from "moment";
 
 import Button from "@material-ui/core/Button";
@@ -7,12 +8,10 @@ import Typography from "@material-ui/core/Typography";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import { makeStyles } from "@material-ui/core/styles";
 
-import {
-  getPostByIdAsync,
-  addCommentAsync,
-  deleteCommentAsync,
-} from "./postSlice";
+import { addCommentAsync, deleteCommentAsync } from "./postSlice";
+
 import useMyProfile from "../../hooks/useMyProfile";
+import usePost from "../../hooks/usePost";
 
 const useStyle = makeStyles({
   post: {
@@ -21,21 +20,20 @@ const useStyle = makeStyles({
   },
 });
 
-const EditPost = ({
+const EditPostComponent = ({
+  history: {
+    location: { state },
+  },
   match: {
     params: { id },
   },
 }) => {
-  const [isProfileLoading, profile] = useMyProfile();
   const classes = useStyle();
+  const [isProfileLoading, profile] = useMyProfile(state);
+  const [isLoading, post] = usePost(state, id);
 
   const [comment, setComment] = useState("");
-  const { isLoading, post } = useSelector((state) => state.post);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getPostByIdAsync(id));
-  }, [dispatch, id]);
 
   if (isLoading || isProfileLoading) return <div>Loading...</div>;
   if (post === null || profile === null) return null;
@@ -107,5 +105,7 @@ const EditPost = ({
     </div>
   );
 };
+
+const EditPost = withRouter(EditPostComponent);
 
 export default EditPost;
