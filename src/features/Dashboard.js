@@ -15,7 +15,6 @@ import moment from "moment";
 
 const Dashboard = () => {
   const [isLoading, profile] = useMyProfile();
-  const [redirectToAddExperience, toggleAddExperience] = useState(false);
   const [experienceId, setEditExperience] = useState();
   const [redirectToAddEducation, toggleAddEducation] = useState(false);
   const [educationId, setEditEducation] = useState();
@@ -25,9 +24,6 @@ const Dashboard = () => {
   if (isLoading) return <div>Loading Profile...</div>;
 
   if (profile === null) return null;
-
-  if (redirectToAddExperience)
-    return <Redirect to="/profile/me/add-experience" />;
 
   if (experienceId)
     return <Redirect to={`/profile/me/edit-experience/${experienceId}`} />;
@@ -68,7 +64,7 @@ const Dashboard = () => {
         >
           Edit Profile
         </Button>
-        <Button onClick={() => toggleAddExperience(true)}>
+        <Button onClick={() => history.push("/profile/me/add-experience")}>
           Add Experience
         </Button>
         <Button onClick={() => toggleAddEducation(true)}>Add Education</Button>
