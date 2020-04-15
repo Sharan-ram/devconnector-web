@@ -24,8 +24,10 @@ const UserProfiles = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllProfilesAsync());
-  }, [dispatch]);
+    if (userProfiles === null) {
+      dispatch(getAllProfilesAsync());
+    }
+  }, [dispatch, userProfiles]);
 
   if (isLoading) return <div>Loading...</div>;
   if (userProfiles === null) return null;

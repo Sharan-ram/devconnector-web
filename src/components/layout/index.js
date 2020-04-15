@@ -4,7 +4,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
 } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,13 +16,13 @@ import TopNavigation from "./TopNavigation";
 
 const useStyles = makeStyles({
   container: {
-    marginTop: "80px"
-  }
+    marginTop: "80px",
+  },
 });
 
 const Layout = () => {
   const classes = useStyles();
-  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   return (
     <Router>
       <TopNavigation />
