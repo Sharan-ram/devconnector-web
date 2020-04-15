@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import moment from "moment";
 
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { getProfileByUserIdAsync, getGithubReposAsync } from "./profileSlice";
+import { getGithubReposAsync } from "./profileSlice";
+import useProfileByUserId from "../../hooks/useProfileByUserId";
 
 const useStyle = makeStyles({
   profile: {
@@ -32,21 +33,21 @@ const useStyle = makeStyles({
   },
 });
 
-const SingleProfile = ({
+const SingleProfileComponent = ({
   match: {
     params: { id: userId },
   },
+  history: {
+    location: { state },
+  },
 }) => {
   const classes = useStyle();
-  const { isLoading, profile, githubRepos, isGithubReposLoading } = useSelector(
+  const [isProfileLoading, profile, error] = useProfileByUserId(state, userId);
+  const { githubRepos, isGithubReposLoading } = useSelector(
     (state) => state.profile
   );
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getProfileByUserIdAsync(userId));
-  }, [dispatch, userId]);
 
   const { githubusername } = profile || {};
   useEffect(() => {
@@ -55,10 +56,7 @@ const SingleProfile = ({
     }
   }, [dispatch, githubusername]);
 
-  console.log("profile", profile);
-  console.log("githubRepos", githubRepos);
-
-  if (isLoading) return <div>Loading...</div>;
+  if (isProfileLoading) return <div>Loading...</div>;
   if (profile === null) return null;
 
   const {
@@ -193,5 +191,7 @@ const SingleProfile = ({
     </div>
   );
 };
+
+const SingleProfile = withRouter(SingleProfileComponent);
 
 export default SingleProfile;

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import Button from "@material-ui/core/Button";
@@ -17,10 +17,10 @@ const useStyle = makeStyles({
 });
 
 const UserProfiles = () => {
-  const [userId, setUser] = useState();
   const { isLoading, userProfiles } = useSelector((state) => state.profile);
 
   const classes = useStyle();
+  const history = useHistory();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,7 +29,6 @@ const UserProfiles = () => {
 
   if (isLoading) return <div>Loading...</div>;
   if (userProfiles === null) return null;
-  if (userId) return <Redirect to={`/users/profiles/${userId}`} />;
 
   return (
     <div>
@@ -55,7 +54,19 @@ const UserProfiles = () => {
                   {location || "No location mentioned"}
                 </Typography>
                 <div>
-                  <Button onClick={() => setUser(userId)}>View Profile</Button>
+                  <Button
+                    onClick={() =>
+                      history.push({
+                        pathname: `/users/profiles/${userId}`,
+                        state: {
+                          userId,
+                          profile,
+                        },
+                      })
+                    }
+                  >
+                    View Profile
+                  </Button>
                 </div>
               </div>
               <div>
