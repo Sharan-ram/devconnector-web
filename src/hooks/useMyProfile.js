@@ -13,7 +13,7 @@ const useMyProfile = (historyState) => {
   }, [dispatch, historyState]);
 
   if (historyState?.profile !== undefined) {
-    return [false, historyState.profile];
+    return [false, historyState.profile, false];
   }
 
   return [isLoading, myProfile, error];
