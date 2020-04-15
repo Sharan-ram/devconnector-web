@@ -1,4 +1,5 @@
 import React, { useState, useReducer } from "react";
+import { withRouter } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import Button from "@material-ui/core/Button";
@@ -275,18 +276,23 @@ const Form = ({ profile, updateProfile }) => {
   );
 };
 
-const MyProfile = () => {
-  const [isLoading, myProfile] = useMyProfile();
-
+const MyProfileComponent = ({
+  history: {
+    location: { state },
+  },
+}) => {
+  const [_, profile] = useMyProfile(state);
   const dispatch = useDispatch();
-
-  if (isLoading) return <div>Loading Profile ...</div>;
 
   const updateProfile = (profile) => {
     dispatch(updateProfileAsync(profile));
   };
 
-  return <Form profile={myProfile} updateProfile={updateProfile} />;
+  if (profile === null) return null;
+
+  return <Form profile={profile} updateProfile={updateProfile} />;
 };
+
+const MyProfile = withRouter(MyProfileComponent);
 
 export default MyProfile;
