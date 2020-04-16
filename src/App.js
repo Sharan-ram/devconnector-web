@@ -14,6 +14,22 @@ const theme = createMuiTheme({
       lightColor: "#f4f4f4",
     },
   },
+  overrides: {
+    MuiTableHead: {
+      root: {
+        background: "#f4f4f4",
+      },
+    },
+    MuiTableCell: {
+      head: {
+        fontWeight: 900,
+        textAlign: "center",
+      },
+      body: {
+        textAlign: "center",
+      },
+    },
+  },
 });
 
 function App() {
