@@ -3,13 +3,12 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import Button from "@material-ui/core/Button";
-import PersonIcon from "@material-ui/icons/Person";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/styles";
 
 import { registerAsync } from "./authSlice";
-import { FormErrors } from "../components/ui";
+import { FormErrors, HeaderText } from "../components/ui";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -19,18 +18,6 @@ const useStyles = makeStyles((theme) => ({
   form: {
     display: "grid",
     gridRowGap: "1em",
-  },
-  icon: {
-    display: "grid",
-    gridTemplateColumns: "0.3fr 10fr",
-    alignItems: "center",
-  },
-  logo: {
-    width: "1.2em",
-    height: "1.5em",
-  },
-  signInText: {
-    fontSize: "1.5em",
   },
   textField: {
     width: "100%",
@@ -80,12 +67,7 @@ const Register = () => {
   return (
     <div className={classes.container}>
       <div className={classes.form}>
-        <div className={classes.icon}>
-          <PersonIcon className={classes.logo} />
-          <Typography component="p" className={classes.signInText}>
-            Create Your Account
-          </Typography>
-        </div>
+        <HeaderText text="Create Your Account" />
         <div>
           <TextField
             label="Name"
