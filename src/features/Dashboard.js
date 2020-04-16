@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import moment from "moment";
 
 import Button from "@material-ui/core/Button";
 import Table from "@material-ui/core/Table";
@@ -9,11 +10,30 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/styles";
 
 import useMyProfile from "../hooks/useMyProfile";
-import moment from "moment";
+import { HeaderText } from "../components/ui";
+
+const useStyle = makeStyles((theme) => ({
+  container: {
+    width: "80%",
+    margin: "0 auto",
+  },
+  buttonContainer: {
+    display: "grid",
+    marginTop: "1em",
+    gridTemplateColumns: "1fr 1fr 1fr",
+    gridGap: "1em",
+    width: "50%",
+  },
+  credentialText: {
+    margin: "2em 0 1em",
+  },
+}));
 
 const Dashboard = () => {
+  const classes = useStyle();
   const [isLoading, profile] = useMyProfile();
 
   const history = useHistory();
@@ -42,25 +62,35 @@ const Dashboard = () => {
   const sortedEducation = sortByFromDate(education);
 
   return (
-    <div>
-      <h3>Welcome {user.name}</h3>
-      <div>
+    <div className={classes.container}>
+      <HeaderText text={`Welcome ${user.name}`} />
+      <div className={classes.buttonContainer}>
         <Button
           onClick={() =>
             history.push({ pathname: "/profile/me", state: { profile } })
           }
+          variant="contained"
+          color="primary"
         >
           Edit Profile
         </Button>
-        <Button onClick={() => history.push("/profile/me/add-experience")}>
+        <Button
+          onClick={() => history.push("/profile/me/add-experience")}
+          variant="contained"
+          color="primary"
+        >
           Add Experience
         </Button>
-        <Button onClick={() => history.push("/profile/me/add-education")}>
+        <Button
+          onClick={() => history.push("/profile/me/add-education")}
+          variant="contained"
+          color="primary"
+        >
           Add Education
         </Button>
       </div>
       <div>
-        <h4>Experience Credentials</h4>
+        <h2 className={classes.credentialText}>Experience Credentials</h2>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -95,6 +125,8 @@ const Dashboard = () => {
                             },
                           })
                         }
+                        variant="contained"
+                        color="primary"
                       >
                         Edit
                       </Button>
@@ -107,7 +139,7 @@ const Dashboard = () => {
         </TableContainer>
       </div>
       <div>
-        <h4>Education Credentials</h4>
+        <h2 className={classes.credentialText}>Education Credentials</h2>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -142,6 +174,8 @@ const Dashboard = () => {
                             },
                           })
                         }
+                        variant="contained"
+                        color="primary"
                       >
                         Edit
                       </Button>
