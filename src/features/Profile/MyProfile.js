@@ -16,7 +16,7 @@ import { updateProfileAsync } from "./profileSlice";
 import useMyProfile from "../../hooks/useMyProfile";
 
 const getInitialState = (profile) => {
-  if (profile === null) {
+  if (typeof profile === "string") {
     return {
       status: "",
       company: "",

@@ -13,7 +13,7 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/styles";
 
 import useMyProfile from "../hooks/useMyProfile";
-import { HeaderText } from "../components/ui";
+import { HeaderText, FormErrors } from "../components/ui";
 
 const useStyle = makeStyles((theme) => ({
   container: {
@@ -30,6 +30,9 @@ const useStyle = makeStyles((theme) => ({
   credentialText: {
     margin: "2em 0 1em",
   },
+  error: {
+    marginTop: "2em",
+  },
 }));
 
 const Dashboard = () => {
@@ -42,7 +45,18 @@ const Dashboard = () => {
 
   if (profile === null) return null;
 
-  const { experience, education, user } = profile;
+  const getProfileDetails = (profile) => {
+    if (typeof profile === "string") {
+      return {
+        experience: [],
+        education: [],
+        user: { name: "" },
+      };
+    }
+    const { education, experience, user } = profile;
+    return { education, experience, user };
+  };
+  const { experience, education, user } = getProfileDetails(profile);
 
   const sortByFromDate = (arr) => {
     return arr
@@ -78,6 +92,7 @@ const Dashboard = () => {
           onClick={() => history.push("/profile/me/add-experience")}
           variant="contained"
           color="primary"
+          disabled={typeof profile === "string"}
         >
           Add Experience
         </Button>
@@ -85,10 +100,19 @@ const Dashboard = () => {
           onClick={() => history.push("/profile/me/add-education")}
           variant="contained"
           color="primary"
+          disabled={typeof profile === "string"}
         >
           Add Education
         </Button>
       </div>
+      <FormErrors
+        className={classes.error}
+        text={
+          typeof profile === "string"
+            ? "Click on edit profile to create a profile"
+            : null
+        }
+      />
       <div>
         <h2 className={classes.credentialText}>Experience Credentials</h2>
         <TableContainer component={Paper}>

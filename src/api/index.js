@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const api = async options => {
+const api = async (options) => {
   const jwt = localStorage.getItem("jwt");
   const {
     loadingAction,
@@ -10,7 +10,7 @@ const api = async options => {
     payload,
     access = "private",
     stateSlice,
-    dispatch
+    dispatch,
   } = options;
   dispatch(loadingAction());
 
@@ -30,11 +30,13 @@ const api = async options => {
     config.headers = headers;
   }
 
+  console.log("url config", url, config);
+
   try {
     const res = await axios({
       ...config,
       method,
-      url
+      url,
     });
     dispatch(dataAction({ [stateSlice]: res.data }));
 
@@ -44,18 +46,18 @@ const api = async options => {
   } catch (err) {
     console.error(err);
     const {
-      response: { data, status }
+      response: { data, status },
     } = err;
     let payload = {};
     if (typeof data === "string") {
       payload = {
         msg: data,
-        status
+        status,
       };
     } else {
       payload = {
         ...data.errors[0],
-        status
+        status,
       };
     }
     dispatch(dataAction({ error: true, errorData: payload }));
