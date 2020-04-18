@@ -15,7 +15,7 @@ import { makeStyles } from "@material-ui/styles";
 import useMyProfile from "../hooks/useMyProfile";
 import { HeaderText, FormErrors } from "../components/ui";
 
-const useStyle = makeStyles((theme) => ({
+const useStyle = makeStyles({
   container: {
     width: "80%",
     margin: "0 auto",
@@ -33,7 +33,7 @@ const useStyle = makeStyles((theme) => ({
   error: {
     marginTop: "2em",
   },
-}));
+});
 
 const Dashboard = () => {
   const classes = useStyle();

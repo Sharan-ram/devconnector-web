@@ -3,17 +3,51 @@ import { withRouter } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import Button from "@material-ui/core/Button";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
+import FacebookIcon from "@material-ui/icons/Facebook";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import InstagramIcon from "@material-ui/icons/Instagram";
+import LinkedInIcon from "@material-ui/icons/LinkedIn";
+import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import TwitterIcon from "@material-ui/icons/Twitter";
+import YouTubeIcon from "@material-ui/icons/YouTube";
+import { makeStyles } from "@material-ui/styles";
 
 import { updateProfileAsync } from "./profileSlice";
 
 import useMyProfile from "../../hooks/useMyProfile";
+import { HeaderText } from "../../components/ui";
+
+const useStyle = makeStyles((theme) => ({
+  container: {
+    display: "grid",
+    gridGap: "1.5em",
+    width: "80%",
+    margin: "0 auto",
+  },
+  select: {
+    width: "100%",
+  },
+  textArea: {
+    width: "100%",
+  },
+  socialMediaLinks: {
+    display: "grid",
+    gridGap: "1.5em",
+  },
+  socialMediaButton: {
+    background: theme.palette.primary.lightColor,
+  },
+  links: {
+    display: "grid",
+    gridTemplateColumns: "1fr 9fr",
+    alignItems: "center",
+  },
+}));
 
 const getInitialState = (profile) => {
   if (typeof profile === "string") {
@@ -88,6 +122,7 @@ const reducer = (state, action) => {
 };
 
 const Form = ({ profile, updateProfile }) => {
+  const classes = useStyle();
   const [showSocialMediaLinks, toggleSocialMediaLinks] = useState(false);
 
   const [
@@ -129,9 +164,10 @@ const Form = ({ profile, updateProfile }) => {
   };
 
   return (
-    <div>
+    <div className={classes.container}>
+      <HeaderText text="Let's get some information to make your profile stand out" />
       <div>
-        <FormControl required>
+        <FormControl variant="outlined" required className={classes.select}>
           <InputLabel>Select Professional Status</InputLabel>
           <Select
             value={status}
@@ -162,6 +198,8 @@ const Form = ({ profile, updateProfile }) => {
           onChange={(e) =>
             dispatch({ type: "COMPANY", payload: e.target.value })
           }
+          variant="outlined"
+          fullWidth
           helperText="Could be your own company or one you work for"
         />
       </div>
@@ -172,6 +210,8 @@ const Form = ({ profile, updateProfile }) => {
           onChange={(e) =>
             dispatch({ type: "WEBSITE", payload: e.target.value })
           }
+          variant="outlined"
+          fullWidth
           helperText="Could be your own or company website"
         />
       </div>
@@ -182,6 +222,8 @@ const Form = ({ profile, updateProfile }) => {
           onChange={(e) =>
             dispatch({ type: "LOCATION", payload: e.target.value })
           }
+          variant="outlined"
+          fullWidth
           helperText="City and State suggested(eg Boston, MA)"
         />
       </div>
@@ -192,6 +234,8 @@ const Form = ({ profile, updateProfile }) => {
           onChange={(e) =>
             dispatch({ type: "SKILLS", payload: e.target.value })
           }
+          variant="outlined"
+          fullWidth
           helperText="Please use comma separated values(eg. HTML, CSS, JAVASCRIPT)"
           required
         />
@@ -203,6 +247,8 @@ const Form = ({ profile, updateProfile }) => {
           onChange={(e) =>
             dispatch({ type: "GITHUBUSERNAME", payload: e.target.value })
           }
+          variant="outlined"
+          fullWidth
           helperText="If you want your latest repos and a Github link, include your username"
         />
       </div>
@@ -212,65 +258,102 @@ const Form = ({ profile, updateProfile }) => {
           value={bio}
           onChange={(e) => dispatch({ type: "BIO", payload: e.target.value })}
           placeholder="Tell us a little about yourself"
+          className={classes.textArea}
         />
       </div>
-      {!showSocialMediaLinks ? (
-        <div>
-          <Button onClick={() => toggleSocialMediaLinks(!showSocialMediaLinks)}>
-            Add Social Network Links
-          </Button>{" "}
-          Optional
-        </div>
-      ) : (
-        <div>
-          <div>
-            <TextField
-              label="Youtube"
-              value={youtube}
-              onChange={(e) =>
-                dispatch({ type: "YOUTUBE", payload: e.target.value })
-              }
-            />
+      <div>
+        <Button
+          vatiant="contained"
+          className={classes.socialMediaButton}
+          onClick={() => toggleSocialMediaLinks(!showSocialMediaLinks)}
+        >
+          Add Social Network Links
+        </Button>
+      </div>
+      {showSocialMediaLinks && (
+        <div className={classes.socialMediaLinks}>
+          <div className={classes.links}>
+            <div>
+              <YouTubeIcon />
+            </div>
+            <div>
+              <TextField
+                label="Youtube"
+                value={youtube}
+                onChange={(e) =>
+                  dispatch({ type: "YOUTUBE", payload: e.target.value })
+                }
+                variant="outlined"
+                fullWidth
+              />
+            </div>
           </div>
-          <div>
-            <TextField
-              label="Twitter"
-              value={twitter}
-              onChange={(e) =>
-                dispatch({ type: "TWITTER", payload: e.target.value })
-              }
-            />
+          <div className={classes.links}>
+            <div>
+              <TwitterIcon />
+            </div>
+            <div>
+              <TextField
+                label="Twitter"
+                value={twitter}
+                onChange={(e) =>
+                  dispatch({ type: "TWITTER", payload: e.target.value })
+                }
+                variant="outlined"
+                fullWidth
+              />
+            </div>
           </div>
-          <div>
-            <TextField
-              label="Facebook"
-              value={facebook}
-              onChange={(e) =>
-                dispatch({ type: "FACEBOOK", payload: e.target.value })
-              }
-            />
+          <div className={classes.links}>
+            <div>
+              <FacebookIcon />
+            </div>
+            <div>
+              <TextField
+                label="Facebook"
+                value={facebook}
+                onChange={(e) =>
+                  dispatch({ type: "FACEBOOK", payload: e.target.value })
+                }
+                variant="outlined"
+                fullWidth
+              />
+            </div>
           </div>
-          <div>
-            <TextField
-              label="Instagram"
-              value={instagram}
-              onChange={(e) =>
-                dispatch({ type: "INSTAGRAM", payload: e.target.value })
-              }
-            />
+          <div className={classes.links}>
+            <div>
+              <InstagramIcon />
+            </div>
+            <div>
+              <TextField
+                label="Instagram"
+                value={instagram}
+                onChange={(e) =>
+                  dispatch({ type: "INSTAGRAM", payload: e.target.value })
+                }
+                variant="outlined"
+                fullWidth
+              />
+            </div>
           </div>
-          <div>
-            <TextField
-              label="LinkedIn"
-              value={linkedin}
-              onChange={(e) =>
-                dispatch({ type: "LINKEDIN", payload: e.target.value })
-              }
-            />
+          <div className={classes.links}>
+            <div>
+              <LinkedInIcon />
+            </div>
+            <div>
+              <TextField
+                label="LinkedIn"
+                value={linkedin}
+                onChange={(e) =>
+                  dispatch({ type: "LINKEDIN", payload: e.target.value })
+                }
+                variant="outlined"
+                fullWidth
+              />
+            </div>
           </div>
         </div>
       )}
-
       <Button onClick={callUpdateProfile}>Submit</Button>
     </div>
   );
