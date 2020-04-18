@@ -13,7 +13,7 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/styles";
 
 import useMyProfile from "../hooks/useMyProfile";
-import { HeaderText, FormErrors } from "../components/ui";
+import { HeaderText, FormErrors, Loader } from "../components/ui";
 
 const useStyle = makeStyles({
   container: {
@@ -41,7 +41,7 @@ const Dashboard = () => {
 
   const history = useHistory();
 
-  if (isLoading) return <div>Loading Profile...</div>;
+  if (isLoading) return <Loader />;
 
   if (profile === null) return null;
 

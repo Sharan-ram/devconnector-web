@@ -8,6 +8,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { getAllProfilesAsync } from "./profileSlice";
 
+import { Loader } from "../../components/ui";
+
 const useStyle = makeStyles({
   profile: {
     display: "grid",
@@ -29,7 +31,7 @@ const UserProfiles = () => {
     }
   }, [dispatch, userProfiles]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loader />;
   if (userProfiles === null) return null;
 
   return (

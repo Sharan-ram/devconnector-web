@@ -12,6 +12,7 @@ import { addCommentAsync, deleteCommentAsync } from "./postSlice";
 
 import useMyProfile from "../../hooks/useMyProfile";
 import usePost from "../../hooks/usePost";
+import { Loader } from "../../components/ui";
 
 const useStyle = makeStyles({
   post: {
@@ -35,7 +36,7 @@ const EditPostComponent = ({
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
 
-  if (isLoading || isProfileLoading) return <div>Loading...</div>;
+  if (isLoading || isProfileLoading) return <Loader />;
   if (post === null || profile === null) return null;
 
   const { _id, text, name, date, comments } = post;

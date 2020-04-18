@@ -6,6 +6,8 @@ import useMyProfile from "../../hooks/useMyProfile";
 import { editExperienceAsync, deleteExperienceAsync } from "./profileSlice";
 import ExperienceForm from "./ExperienceForm";
 
+import { Loader } from "../../components/ui";
+
 const EditExperience = ({
   history: {
     location: { state },
@@ -17,7 +19,7 @@ const EditExperience = ({
 
   if (!state) return <Redirect to="/" />;
 
-  if (isLoading) return <div>Loading profile...</div>;
+  if (isLoading) return <Loader />;
 
   if (profile === null) return null;
 

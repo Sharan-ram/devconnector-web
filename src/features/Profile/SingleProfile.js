@@ -9,6 +9,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { getGithubReposAsync } from "./profileSlice";
 import useProfileByUserId from "../../hooks/useProfileByUserId";
 
+import { Loader } from "../../components/ui";
+
 const useStyle = makeStyles({
   profile: {
     border: "1px solid black",
@@ -56,7 +58,7 @@ const SingleProfileComponent = ({
     }
   }, [dispatch, githubusername]);
 
-  if (isProfileLoading) return <div>Loading...</div>;
+  if (isProfileLoading) return <Loader />;
   if (profile === null) return null;
 
   const {

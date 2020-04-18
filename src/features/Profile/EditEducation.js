@@ -5,6 +5,7 @@ import { Redirect } from "react-router-dom";
 import useMyProfile from "../../hooks/useMyProfile";
 import { editEducationAsync, deleteEducationAsync } from "./profileSlice";
 import EducationForm from "./EducationForm";
+import { Loader } from "../../components/ui";
 
 const EditEducation = ({
   history: {
@@ -17,7 +18,7 @@ const EditEducation = ({
 
   if (!state) return <Redirect to="/" />;
 
-  if (isLoading) return <div>Loading profile...</div>;
+  if (isLoading) return <Loader />;
 
   if (profile === null) return null;
 

@@ -16,6 +16,8 @@ import {
 } from "./postSlice";
 import useMyProfile from "../../hooks/useMyProfile";
 
+import { Loader } from "../../components/ui";
+
 const useStyle = makeStyles({
   post: {
     display: "grid",
@@ -45,7 +47,7 @@ const Posts = () => {
     dispatch(createPostAsync({ text: post }));
   };
 
-  if (isLoading || isProfileLoading) return <div>Loading profile...</div>;
+  if (isLoading || isProfileLoading) return <Loader />;
   if (profile === null) return null;
 
   const getLikeCountText = (hasUserLiked, likeCount) => {
