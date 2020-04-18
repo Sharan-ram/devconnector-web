@@ -28,7 +28,7 @@ const useStyle = makeStyles((theme) => ({
     display: "grid",
     gridGap: "1.5em",
     width: "80%",
-    margin: "0 auto",
+    margin: "0 auto 2.5em",
   },
   select: {
     width: "100%",

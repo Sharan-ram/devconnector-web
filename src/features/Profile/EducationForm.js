@@ -63,7 +63,7 @@ const getInitialState = ({ type, education }) => {
 const useStyle = makeStyles((theme) => ({
   container: {
     width: "80%",
-    margin: "0 auto",
+    margin: "0 auto 2.5em",
     display: "grid",
     gridGap: "1.5em",
   },
@@ -78,7 +78,6 @@ const useStyle = makeStyles((theme) => ({
     gridTemplateColumns: "auto auto",
     gridGap: "1em",
     width: "30%",
-    marginBottom: "2em",
   },
   deleteButton: {
     background: theme.palette.primary.danger,

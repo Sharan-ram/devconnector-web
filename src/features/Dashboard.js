@@ -18,7 +18,7 @@ import { HeaderText, FormErrors } from "../components/ui";
 const useStyle = makeStyles({
   container: {
     width: "80%",
-    margin: "0 auto",
+    margin: "0 auto 2.5em",
   },
   buttonContainer: {
     display: "grid",

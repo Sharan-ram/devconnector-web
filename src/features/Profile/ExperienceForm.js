@@ -65,7 +65,7 @@ const useStyle = makeStyles((theme) => ({
     display: "grid",
     gridGap: "1.5em",
     width: "80%",
-    margin: "0 auto",
+    margin: "0 auto 2.5em",
   },
   textArea: {
     width: "100%",
@@ -78,7 +78,6 @@ const useStyle = makeStyles((theme) => ({
     gridTemplateColumns: "auto auto",
     gridGap: "1em",
     width: "30%",
-    marginBottom: "2em",
   },
   deleteButton: {
     background: theme.palette.primary.danger,
