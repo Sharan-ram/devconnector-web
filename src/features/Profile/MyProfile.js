@@ -51,9 +51,6 @@ const useStyle = makeStyles((theme) => ({
   logo: {
     justifySelf: "center",
   },
-  submitButton: {
-    width: "10%",
-  },
 }));
 
 const getInitialState = (profile) => {
@@ -362,14 +359,16 @@ const Form = ({ profile, updateProfile }) => {
           </div>
         </div>
       )}
-      <Button
-        className={classes.submitButton}
-        variant="contained"
-        color="primary"
-        onClick={callUpdateProfile}
-      >
-        Submit
-      </Button>
+      <div>
+        <Button
+          className={classes.submitButton}
+          variant="contained"
+          color="primary"
+          onClick={callUpdateProfile}
+        >
+          Submit
+        </Button>
+      </div>
     </div>
   );
 };
