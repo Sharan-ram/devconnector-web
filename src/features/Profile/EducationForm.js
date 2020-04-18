@@ -7,6 +7,9 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import TextField from "@material-ui/core/TextField";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import { makeStyles } from "@material-ui/styles";
+
+import { HeaderText } from "../../components/ui";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -57,12 +60,39 @@ const getInitialState = ({ type, education }) => {
   };
 };
 
+const useStyle = makeStyles((theme) => ({
+  container: {
+    width: "80%",
+    margin: "0 auto",
+    display: "grid",
+    gridGap: "1.5em",
+  },
+  date: {
+    width: "100%",
+  },
+  textArea: {
+    width: "100%",
+  },
+  buttonWrapper: {
+    display: "grid",
+    gridTemplateColumns: "auto auto",
+    gridGap: "1em",
+    width: "30%",
+    marginBottom: "2em",
+  },
+  deleteButton: {
+    background: theme.palette.primary.danger,
+    color: "#fff",
+  },
+}));
+
 const EducationForm = ({
   type,
   dispatchFunction,
   education,
   deleteEducation,
 }) => {
+  const classes = useStyle();
   const [
     { school, degree, fieldofstudy, from, to, current, description },
     dispatch,
@@ -81,7 +111,9 @@ const EducationForm = ({
   };
 
   return (
-    <div>
+    <div className={classes.container}>
+      <HeaderText text="Add any school or bootcamp that you have attended" />
+      <small>* = required field</small>
       <div>
         <TextField
           label="School or Bootcamp"
@@ -89,6 +121,8 @@ const EducationForm = ({
           onChange={(e) =>
             dispatch({ type: "SCHOOL", payload: e.target.value })
           }
+          variant="outlined"
+          fullWidth
           required
         />
       </div>
@@ -99,6 +133,8 @@ const EducationForm = ({
           onChange={(e) =>
             dispatch({ type: "DEGREE", payload: e.target.value })
           }
+          variant="outlined"
+          fullWidth
           required
         />
       </div>
@@ -109,6 +145,8 @@ const EducationForm = ({
           onChange={(e) =>
             dispatch({ type: "FIELDOFSTUDY", payload: e.target.value })
           }
+          variant="outlined"
+          fullWidth
         />
       </div>
       <div>
@@ -118,6 +156,8 @@ const EducationForm = ({
           onChange={(date) => dispatch({ type: "FROM", payload: date })}
           format="DD/MM/YYYY"
           variant="inline"
+          inputVariant="outlined"
+          className={classes.date}
           autoOk
           disableFuture
         />
@@ -145,6 +185,8 @@ const EducationForm = ({
           disableFuture
           autoOk
           variant="inline"
+          inputVariant="outlined"
+          className={classes.date}
         />
       </div>
       <div>
@@ -155,12 +197,20 @@ const EducationForm = ({
             dispatch({ type: "DESCRIPTION", payload: e.target.value })
           }
           placeholder="Program Description"
+          className={classes.textArea}
         />
       </div>
-      <div>
-        <Button onClick={submitEducation}>Submit</Button>
+      <div className={classes.buttonWrapper}>
+        <Button variant="contained" color="primary" onClick={submitEducation}>
+          Submit
+        </Button>
         {type === "edit" && (
-          <Button onClick={() => deleteEducation(education._id)}>Delete</Button>
+          <Button
+            className={classes.deleteButton}
+            onClick={() => deleteEducation(education._id)}
+          >
+            Delete
+          </Button>
         )}
       </div>
     </div>
