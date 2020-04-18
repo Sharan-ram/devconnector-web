@@ -8,15 +8,43 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { getAllProfilesAsync } from "./profileSlice";
 
-import { Loader } from "../../components/ui";
+import { Loader, HeaderText } from "../../components/ui";
 
-const useStyle = makeStyles({
+const useStyle = makeStyles((theme) => ({
+  container: {
+    display: "grid",
+    gridGap: "1.5em",
+    width: "80%",
+    margin: "0 auto 2.5em",
+  },
   profile: {
     display: "grid",
     gridTemplateColumns: "1fr 3fr 1fr",
-    border: "1px solid black",
+    gridGap: "2em",
+    background: theme.palette.primary.lightColor,
+    border: "#ccc solid 1px",
+    padding: "1.5em",
   },
-});
+  imageWrapper: {
+    alignSelf: "center",
+  },
+  image: {
+    borderRadius: "50%",
+    width: "100%",
+  },
+  details: {
+    alignSelf: "center",
+    justifySelf: "center",
+  },
+  name: {
+    fontSize: "1.5em",
+    fontWeight: "bold",
+  },
+  skills: {
+    alignSelf: "center",
+    color: theme.palette.primary.main,
+  },
+}));
 
 const UserProfiles = () => {
   const { isLoading, userProfiles } = useSelector((state) => state.profile);
@@ -35,8 +63,8 @@ const UserProfiles = () => {
   if (userProfiles === null) return null;
 
   return (
-    <div>
-      <h3>Browse and connect with developers</h3>
+    <div className={classes.container}>
+      <HeaderText text="Browse and connect with developers" />
       {userProfiles.length !== 0 ? (
         userProfiles.map((profile) => {
           const {
@@ -50,13 +78,15 @@ const UserProfiles = () => {
           const { name, avatar, _id: userId } = user;
           return (
             <div key={profileId} className={classes.profile}>
-              <div>Avatar comes here</div>
-              <div>
-                <Typography component="h3">{name}</Typography>
-                <Typography component="p">{`${status} at ${company}`}</Typography>
-                <Typography component="span">
-                  {location || "No location mentioned"}
+              <div className={classes.imageWrapper}>
+                <img src={avatar} className={classes.image} />
+              </div>
+              <div className={classes.details}>
+                <Typography className={classes.name} component="h2">
+                  {name}
                 </Typography>
+                <Typography component="span">{`${status} at ${company}`}</Typography>
+                <p>{location || ""}</p>
                 <div>
                   <Button
                     onClick={() =>
@@ -68,15 +98,17 @@ const UserProfiles = () => {
                         },
                       })
                     }
+                    variant="contained"
+                    color="primary"
                   >
                     View Profile
                   </Button>
                 </div>
               </div>
-              <div>
+              <div className={classes.skills}>
                 {skills.map((skill, index) => (
                   <Typography key={index} component="p">
-                    {skill}
+                    &#10004;{skill}
                   </Typography>
                 ))}
               </div>
