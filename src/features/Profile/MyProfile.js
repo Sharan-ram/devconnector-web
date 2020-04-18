@@ -1,6 +1,7 @@
 import React, { useState, useReducer } from "react";
 import { withRouter } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import cx from "classnames";
 
 import Button from "@material-ui/core/Button";
 import FacebookIcon from "@material-ui/icons/Facebook";
@@ -46,6 +47,12 @@ const useStyle = makeStyles((theme) => ({
     display: "grid",
     gridTemplateColumns: "1fr 9fr",
     alignItems: "center",
+  },
+  logo: {
+    justifySelf: "center",
+  },
+  submitButton: {
+    width: "10%",
   },
 }));
 
@@ -166,6 +173,7 @@ const Form = ({ profile, updateProfile }) => {
   return (
     <div className={classes.container}>
       <HeaderText text="Let's get some information to make your profile stand out" />
+      <small>* = required field</small>
       <div>
         <FormControl variant="outlined" required className={classes.select}>
           <InputLabel>Select Professional Status</InputLabel>
@@ -273,8 +281,8 @@ const Form = ({ profile, updateProfile }) => {
       {showSocialMediaLinks && (
         <div className={classes.socialMediaLinks}>
           <div className={classes.links}>
-            <div>
-              <YouTubeIcon />
+            <div className={classes.logo}>
+              <YouTubeIcon style={{ fill: "#c4302b", width: "1.5em" }} />
             </div>
             <div>
               <TextField
@@ -289,8 +297,8 @@ const Form = ({ profile, updateProfile }) => {
             </div>
           </div>
           <div className={classes.links}>
-            <div>
-              <TwitterIcon />
+            <div className={classes.logo}>
+              <TwitterIcon style={{ fill: "#00acee", width: "1.5em" }} />
             </div>
             <div>
               <TextField
@@ -305,8 +313,8 @@ const Form = ({ profile, updateProfile }) => {
             </div>
           </div>
           <div className={classes.links}>
-            <div>
-              <FacebookIcon />
+            <div className={classes.logo}>
+              <FacebookIcon style={{ fill: "#3b5998", width: "1.5em" }} />
             </div>
             <div>
               <TextField
@@ -321,8 +329,8 @@ const Form = ({ profile, updateProfile }) => {
             </div>
           </div>
           <div className={classes.links}>
-            <div>
-              <InstagramIcon />
+            <div className={classes.logo}>
+              <InstagramIcon style={{ width: "1.5em" }} />
             </div>
             <div>
               <TextField
@@ -337,8 +345,8 @@ const Form = ({ profile, updateProfile }) => {
             </div>
           </div>
           <div className={classes.links}>
-            <div>
-              <LinkedInIcon />
+            <div className={classes.logo}>
+              <LinkedInIcon style={{ fill: "#0e76a8", width: "1.5em" }} />
             </div>
             <div>
               <TextField
@@ -354,7 +362,14 @@ const Form = ({ profile, updateProfile }) => {
           </div>
         </div>
       )}
-      <Button onClick={callUpdateProfile}>Submit</Button>
+      <Button
+        className={classes.submitButton}
+        variant="contained"
+        color="primary"
+        onClick={callUpdateProfile}
+      >
+        Submit
+      </Button>
     </div>
   );
 };
