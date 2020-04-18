@@ -60,7 +60,7 @@ const getInitialState = ({ type, experience }) => {
   };
 };
 
-const useStyle = makeStyles({
+const useStyle = makeStyles((theme) => ({
   container: {
     display: "grid",
     gridGap: "1.5em",
@@ -73,7 +73,18 @@ const useStyle = makeStyles({
   date: {
     width: "100%",
   },
-});
+  buttonWrapper: {
+    display: "grid",
+    gridTemplateColumns: "auto auto",
+    gridGap: "1em",
+    width: "30%",
+    marginBottom: "2em",
+  },
+  deleteButton: {
+    background: theme.palette.primary.danger,
+    color: "#fff",
+  },
+}));
 
 const ExperienceForm = ({
   type,
@@ -187,12 +198,16 @@ const ExperienceForm = ({
           className={classes.textArea}
         />
       </div>
-      <div>
+      <div className={classes.buttonWrapper}>
         <Button variant="contained" color="primary" onClick={submitExperience}>
           Submit
         </Button>
         {type === "edit" && (
-          <Button onClick={() => deleteExperience(experience._id)}>
+          <Button
+            variant="contained"
+            className={classes.deleteButton}
+            onClick={() => deleteExperience(experience._id)}
+          >
             Delete
           </Button>
         )}
