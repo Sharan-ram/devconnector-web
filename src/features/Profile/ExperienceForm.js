@@ -7,6 +7,9 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import TextField from "@material-ui/core/TextField";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import { makeStyles } from "@material-ui/styles";
+
+import { HeaderText } from "../../components/ui";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -57,12 +60,28 @@ const getInitialState = ({ type, experience }) => {
   };
 };
 
+const useStyle = makeStyles({
+  container: {
+    display: "grid",
+    gridGap: "1.5em",
+    width: "80%",
+    margin: "0 auto",
+  },
+  textArea: {
+    width: "100%",
+  },
+  date: {
+    width: "100%",
+  },
+});
+
 const ExperienceForm = ({
   type,
   dispatchFunction,
   experience,
   deleteExperience,
 }) => {
+  const classes = useStyle();
   const [
     { title, company, location, description, from, to, current },
     dispatch,
@@ -81,13 +100,17 @@ const ExperienceForm = ({
   };
 
   return (
-    <div>
+    <div className={classes.container}>
+      <HeaderText text="Add any developer/programming positions that you have had in the past" />
+      <small>* = required field</small>
       <div>
         <TextField
           label="Job Title"
           value={title}
           onChange={(e) => dispatch({ type: "TITLE", payload: e.target.value })}
           required
+          variant="outlined"
+          fullWidth
         />
       </div>
       <div>
@@ -97,6 +120,8 @@ const ExperienceForm = ({
           onChange={(e) =>
             dispatch({ type: "COMPANY", payload: e.target.value })
           }
+          variant="outlined"
+          fullWidth
           required
         />
       </div>
@@ -107,6 +132,8 @@ const ExperienceForm = ({
           onChange={(e) =>
             dispatch({ type: "LOCATION", payload: e.target.value })
           }
+          variant="outlined"
+          fullWidth
         />
       </div>
       <div>
@@ -118,6 +145,8 @@ const ExperienceForm = ({
           variant="inline"
           autoOk
           disableFuture
+          inputVariant="outlined"
+          className={classes.date}
         />
       </div>
       <div>
@@ -143,6 +172,8 @@ const ExperienceForm = ({
           disableFuture
           autoOk
           variant="inline"
+          inputVariant="outlined"
+          className={classes.date}
         />
       </div>
       <div>
@@ -153,10 +184,13 @@ const ExperienceForm = ({
             dispatch({ type: "DESCRIPTION", payload: e.target.value })
           }
           placeholder="Job Description"
+          className={classes.textArea}
         />
       </div>
       <div>
-        <Button onClick={submitExperience}>Submit</Button>
+        <Button variant="contained" color="primary" onClick={submitExperience}>
+          Submit
+        </Button>
         {type === "edit" && (
           <Button onClick={() => deleteExperience(experience._id)}>
             Delete
