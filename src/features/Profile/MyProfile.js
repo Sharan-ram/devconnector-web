@@ -1,7 +1,6 @@
 import React, { useState, useReducer } from "react";
 import { withRouter } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import cx from "classnames";
 
 import Button from "@material-ui/core/Button";
 import FacebookIcon from "@material-ui/icons/Facebook";
