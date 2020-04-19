@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter, useHistory } from "react-router-dom";
 import moment from "moment";
 
+import Button from "@material-ui/core/Button";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
@@ -22,6 +23,9 @@ const useStyle = makeStyles((theme) => ({
     gridGap: "1.5em",
     width: "80%",
     margin: "0 auto 2.5em",
+  },
+  backToProfileButton: {
+    background: theme.palette.primary.lightColor,
   },
   profile: {
     display: "grid",
@@ -63,10 +67,7 @@ const useStyle = makeStyles((theme) => ({
     textAlign: "center",
     padding: "2em",
   },
-  bioHeader: {
-    color: theme.palette.primary.main,
-  },
-  skillsHeader: {
+  titleHeader: {
     color: theme.palette.primary.main,
   },
   skills: {
@@ -89,22 +90,45 @@ const useStyle = makeStyles((theme) => ({
     padding: "2em",
     border: "1px solid #ccc",
   },
-  experienceHeader: {
-    color: theme.palette.primary.main,
-  },
-  educationHeader: {
-    color: theme.palette.primary.main,
-  },
   educationWrapper: {
     padding: "2em",
     border: "1px solid #ccc",
   },
   githubRepos: {
     display: "grid",
-    gridTemplateColumns: "1fr 1fr",
+    gridAutoFlow: "row",
+    gridGap: "1em",
   },
   repo: {
-    border: "1px solid black",
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    border: "1px solid #ccc",
+    padding: "1em",
+  },
+  githubName: {
+    color: theme.palette.primary.main,
+    margin: "0 0 1em",
+    padding: 0,
+  },
+  repoDetails: {
+    justifySelf: "end",
+    display: "grid",
+    gridAutoFlow: "row",
+    gridGap: "0.3em",
+    width: "30%",
+    textAlign: "center",
+  },
+  stars: {
+    background: theme.palette.primary.main,
+    color: "#fff",
+  },
+  watchers: {
+    background: theme.palette.primary.darkColor,
+    color: "#fff",
+  },
+  forks: {
+    background: theme.palette.primary.lightColor,
+    border: "1px solid #ccc",
   },
 }));
 
@@ -117,6 +141,7 @@ const SingleProfileComponent = ({
   },
 }) => {
   const classes = useStyle();
+  const history = useHistory();
   const [isProfileLoading, profile, error] = useProfileByUserId(state, userId);
   const { githubRepos, isGithubReposLoading } = useSelector(
     (state) => state.profile
@@ -154,6 +179,15 @@ const SingleProfileComponent = ({
   } = social || {};
   return (
     <div className={classes.container}>
+      <div>
+        <Button
+          variant="contained"
+          className={classes.backToProfileButton}
+          onClick={() => history.push("/users/profiles/all")}
+        >
+          Back To Profiles
+        </Button>
+      </div>
       <div className={classes.profile}>
         <div>
           <img src={avatar} className={classes.avatar} />
@@ -202,12 +236,12 @@ const SingleProfileComponent = ({
       </div>
       <div className={classes.bioAndSkills}>
         <div>
-          <h2 className={classes.bioHeader}>{`${name}'s Bio`}</h2>
+          <h2 className={classes.titleHeader}>{`${name}'s Bio`}</h2>
           <Typography component="p">{bio}</Typography>
         </div>
         <div className={classes.divider} />
         <div>
-          <h2 className={classes.skillsHeader}>Skill Set</h2>
+          <h2 className={classes.titleHeader}>Skill Set</h2>
           <div className={classes.skills}>
             {skills.map((skill, index) => (
               <span key={index}>&#10004;{skill}</span>
@@ -217,7 +251,7 @@ const SingleProfileComponent = ({
       </div>
       <div className={classes.experienceAndEducation}>
         <div className={classes.experienceWrapper}>
-          <h2 className={classes.experienceHeader}>Experience</h2>
+          <h2 className={classes.titleHeader}>Experience</h2>
           {experience.map((experience) => {
             const {
               _id,
@@ -258,7 +292,7 @@ const SingleProfileComponent = ({
           })}
         </div>
         <div className={classes.educationWrapper}>
-          <h2 className={classes.educationHeader}>Education</h2>
+          <h2 className={classes.titleHeader}>Education</h2>
           {education.map((education) => {
             const {
               _id,
@@ -301,19 +335,41 @@ const SingleProfileComponent = ({
         </div>
       </div>
       <div>
-        <h3>Github repos</h3>
+        <h2 className={classes.titleHeader}>Github repos</h2>
         {isGithubReposLoading && <div>Loading Github repos</div>}
         {githubRepos !== null && (
           <div className={classes.githubRepos}>
             {githubRepos.map((repo) => {
-              const { id, name, description, language, html_url } = repo;
+              const {
+                id,
+                name,
+                description,
+                language,
+                html_url,
+                stargazers_count: stars,
+                forks,
+                watchers,
+              } = repo;
               return (
                 <div className={classes.repo} key={id}>
-                  <Link to={{ pathname: html_url }} target="_blank">
-                    {name}
-                  </Link>
-                  <Typography component="p">{description}</Typography>
-                  <Typography component="span">{language}</Typography>
+                  <div>
+                    <Link
+                      style={{ textDecoration: "none" }}
+                      to={{ pathname: html_url }}
+                      target="_blank"
+                    >
+                      <h4 className={classes.githubName}>{name}</h4>
+                    </Link>
+                    <Typography component="p">{description}</Typography>
+                    <Typography component="span">
+                      <strong>{language}</strong>
+                    </Typography>
+                  </div>
+                  <div className={classes.repoDetails}>
+                    <div className={classes.stars}>Stars: {stars}</div>
+                    <div className={classes.watchers}>Watchers: {watchers}</div>
+                    <div className={classes.forks}>Forks: {forks}</div>
+                  </div>
                 </div>
               );
             })}
