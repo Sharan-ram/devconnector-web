@@ -44,6 +44,7 @@ const useStyle = makeStyles((theme) => ({
   skills: {
     alignSelf: "center",
     color: theme.palette.primary.main,
+    textAlign: "start",
   },
 }));
 

@@ -58,7 +58,27 @@ const useStyle = makeStyles((theme) => ({
     },
   },
   bioAndSkills: {
-    border: "1px solid black",
+    border: "1px solid #ccc",
+    background: theme.palette.primary.lightColor,
+    textAlign: "center",
+    padding: "2em",
+  },
+  bioHeader: {
+    color: theme.palette.primary.main,
+  },
+  skillsHeader: {
+    color: theme.palette.primary.main,
+  },
+  skills: {
+    display: "grid",
+    gridAutoFlow: "column",
+    gridGap: "1em",
+    justifyContent: "center",
+  },
+  divider: {
+    height: "1px",
+    background: "#ccc",
+    margin: "1.5em 0",
   },
   experienceAndEducation: {
     display: "grid",
@@ -171,14 +191,15 @@ const SingleProfileComponent = ({
       </div>
       <div className={classes.bioAndSkills}>
         <div>
-          <h3>{`${name}s Bio`}</h3>
+          <h2 className={classes.bioHeader}>{`${name}'s Bio`}</h2>
           <Typography component="p">{bio}</Typography>
         </div>
+        <div className={classes.divider} />
         <div>
-          <h3>Skill Set</h3>
-          <div>
+          <h2 className={classes.skillsHeader}>Skill Set</h2>
+          <div className={classes.skills}>
             {skills.map((skill, index) => (
-              <span key={index}>{skill}</span>
+              <span key={index}>&#10004;{skill}</span>
             ))}
           </div>
         </div>
