@@ -24,6 +24,7 @@ const useStyle = makeStyles((theme) => ({
     background: theme.palette.primary.lightColor,
     border: "#ccc solid 1px",
     padding: "1.5em",
+    textAlign: "center",
   },
   imageWrapper: {
     alignSelf: "center",
@@ -43,6 +44,7 @@ const useStyle = makeStyles((theme) => ({
   skills: {
     alignSelf: "center",
     color: theme.palette.primary.main,
+    textAlign: "start",
   },
 }));
 
