@@ -83,10 +83,21 @@ const useStyle = makeStyles((theme) => ({
   experienceAndEducation: {
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
-    border: "1px solid black",
+    gridGap: "1em",
   },
-  experience: {
-    border: "1px solid black",
+  experienceWrapper: {
+    padding: "2em",
+    border: "1px solid #ccc",
+  },
+  experienceHeader: {
+    color: theme.palette.primary.main,
+  },
+  educationHeader: {
+    color: theme.palette.primary.main,
+  },
+  educationWrapper: {
+    padding: "2em",
+    border: "1px solid #ccc",
   },
   githubRepos: {
     display: "grid",
@@ -205,8 +216,8 @@ const SingleProfileComponent = ({
         </div>
       </div>
       <div className={classes.experienceAndEducation}>
-        <div className={classes.experience}>
-          <h3>Experience</h3>
+        <div className={classes.experienceWrapper}>
+          <h2 className={classes.experienceHeader}>Experience</h2>
           {experience.map((experience) => {
             const {
               _id,
@@ -219,31 +230,35 @@ const SingleProfileComponent = ({
             } = experience;
             return (
               <div key={_id}>
-                <h4>{company}</h4>
+                <h3>{company}</h3>
                 <Typography component="span">{`${moment(from).format(
                   "DD-MM-YYYY"
                 )} to ${
                   to ? moment(to).format("DD-MM-YYYY") : "NA"
                 }`}</Typography>
                 <div>
-                  <h5>Position:</h5>
-                  {title}
+                  <p>
+                    <strong>Position:</strong> {title}
+                  </p>
                 </div>
                 <div>
-                  <h5>Location:</h5>
-                  {location ? location : "NA"}
+                  <p>
+                    <strong>Location:</strong> {location ? location : "NA"}
+                  </p>
                 </div>
                 <div>
-                  <h5>Description:</h5>
-                  {description ? description : "NA"}
+                  <p>
+                    <strong>Description:</strong>{" "}
+                    {description ? description : "NA"}
+                  </p>
                 </div>
-                <hr />
+                <div className={classes.divider} />
               </div>
             );
           })}
         </div>
-        <div>
-          <h3>Education</h3>
+        <div className={classes.educationWrapper}>
+          <h2 className={classes.educationHeader}>Education</h2>
           {education.map((education) => {
             const {
               _id,
@@ -256,25 +271,30 @@ const SingleProfileComponent = ({
             } = education;
             return (
               <div key={_id}>
-                <h4>{school}</h4>
+                <h3>{school}</h3>
                 <Typography component="span">{`${moment(from).format(
                   "DD-MM-YYYY"
                 )} to ${
                   to ? moment(to).format("DD-MM-YYYY") : "NA"
                 }`}</Typography>
                 <div>
-                  <h5>Degree:</h5>
-                  {degree}
+                  <p>
+                    <strong>Degree:</strong> {degree}
+                  </p>
                 </div>
                 <div>
-                  <h5>Field of Study:</h5>
-                  {fieldofstudy ? fieldofstudy : "NA"}
+                  <p>
+                    <strong>Field of Study:</strong>{" "}
+                    {fieldofstudy ? fieldofstudy : "NA"}
+                  </p>
                 </div>
                 <div>
-                  <h5>Description:</h5>
-                  {description ? description : "NA"}
+                  <p>
+                    <strong>Description:</strong>{" "}
+                    {description ? description : "NA"}
+                  </p>
                 </div>
-                <hr />
+                <div className={classes.divider} />
               </div>
             );
           })}
