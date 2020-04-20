@@ -7,19 +7,19 @@ const initialState = {
   jwt: null,
   user: null,
   isLoading: false,
-  error: null
+  error: null,
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    loading(state, _) {
+    loading(state) {
       state.isLoading = true;
     },
     register(state, action) {
       const {
-        payload: { error, errorData, jwt }
+        payload: { error, errorData, jwt },
       } = action;
       if (error) {
         state.error = errorData;
@@ -32,7 +32,7 @@ const authSlice = createSlice({
     },
     login(state, action) {
       const {
-        payload: { error, errorData, jwt }
+        payload: { error, errorData, jwt },
       } = action;
       if (error) {
         state.error = errorData;
@@ -42,13 +42,13 @@ const authSlice = createSlice({
         state.jwt = jwt;
         state.isLoading = false;
       }
-    }
-  }
+    },
+  },
 });
 
 export const { loading, register, login } = authSlice.actions;
 
-export const registerAsync = payload => async dispatch => {
+export const registerAsync = (payload) => async (dispatch) => {
   const options = {
     loadingAction: loading,
     dataAction: register,
@@ -57,12 +57,12 @@ export const registerAsync = payload => async dispatch => {
     payload,
     access: "public",
     stateSlice: "jwt",
-    dispatch
+    dispatch,
   };
   api(options);
 };
 
-export const loginAsync = payload => async dispatch => {
+export const loginAsync = (payload) => async (dispatch) => {
   const options = {
     loadingAction: loading,
     dataAction: login,
@@ -71,7 +71,7 @@ export const loginAsync = payload => async dispatch => {
     payload,
     access: "public",
     stateSlice: "jwt",
-    dispatch
+    dispatch,
   };
   api(options);
 };

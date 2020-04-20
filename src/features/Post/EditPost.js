@@ -130,6 +130,7 @@ const EditPostComponent = ({
         variant="post"
         type="edit"
         postDetails={postDetails}
+        deleteComment={deleteComment}
       />
       <div className={classes.header}>
         <h3>Leave a comment</h3>

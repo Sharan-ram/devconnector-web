@@ -111,7 +111,7 @@ const PostOrComment = ({
       <div className={classes.nameAndAvatarWrapper}>
         <Link className={classes.link} to={link}>
           <div>
-            <img src={avatar} className={classes.image} />
+            <img src={avatar} className={classes.image} alt="avatar" />
           </div>
           <div>
             <h4 className={classes.name}>{name}</h4>
