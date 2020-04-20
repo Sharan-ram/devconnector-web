@@ -3,6 +3,7 @@ import api from "../../api";
 
 const initialState = {
   isLoading: false,
+  isLikesLoading: false,
   posts: null,
   error: null,
   post: null,
@@ -14,6 +15,9 @@ const postSlice = createSlice({
   reducers: {
     loading(state) {
       state.isLoading = true;
+    },
+    likesLoading(state) {
+      state.isLikesLoading = true;
     },
     getAllPosts(state, action) {
       const {
@@ -46,9 +50,9 @@ const postSlice = createSlice({
       } = action;
       if (error) {
         state.error = errorData;
-        state.isLoading = false;
+        state.isLikesLoading = false;
       } else {
-        state.isLoading = false;
+        state.isLikesLoading = false;
         const postIndex = state.posts.findIndex(
           (statePost) => statePost._id === post._id
         );
@@ -96,6 +100,7 @@ const postSlice = createSlice({
 
 export const {
   loading,
+  likesLoading,
   getAllPosts,
   createPost,
   likeOrUnlike,
@@ -130,7 +135,7 @@ export const createPostAsync = (payload) => (dispatch) => {
 
 export const handleLikeOrUnlikeAsync = ({ url, ...payload }) => (dispatch) => {
   const options = {
-    loadingAction: loading,
+    loadingAction: likesLoading,
     dataAction: likeOrUnlike,
     method: "PUT",
     url,

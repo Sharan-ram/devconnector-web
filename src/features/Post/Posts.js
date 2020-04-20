@@ -1,24 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import moment from "moment";
-import cx from "classnames";
 
 import Button from "@material-ui/core/Button";
-import Like from "@material-ui/icons/ThumbUp";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
-import Typography from "@material-ui/core/Typography";
+
 import { makeStyles } from "@material-ui/core/styles";
 
-import {
-  getAllPostsAsync,
-  createPostAsync,
-  handleLikeOrUnlikeAsync,
-} from "./postSlice";
+import { getAllPostsAsync, createPostAsync } from "./postSlice";
 import useMyProfile from "../../hooks/useMyProfile";
 
-import { Loader, HeaderText } from "../../components/ui";
+import { Loader, HeaderText, PostOrComment } from "../../components/ui";
 
 const useStyle = makeStyles((theme) => ({
   container: {
@@ -42,72 +33,6 @@ const useStyle = makeStyles((theme) => ({
     display: "grid",
     gridGap: "1em",
   },
-  post: {
-    display: "grid",
-    border: "1px solid #ccc",
-    gridTemplateColumns: "1fr 4fr",
-    gridGap: "2em",
-    padding: "1em",
-  },
-  nameAndAvatarWrapper: {
-    display: "grid",
-    gridAutoFlow: "row",
-    gridGap: "0.5em",
-    textAlign: "center",
-    alignSelf: "center",
-  },
-  link: {
-    textDecoration: "none",
-  },
-  image: {
-    borderRadius: "50%",
-    width: "100px",
-  },
-  name: {
-    margin: 0,
-    padding: 0,
-    color: theme.palette.primary.main,
-  },
-  dateWrapper: {
-    margin: "1em 0",
-  },
-  date: {
-    fontSize: "0.8em",
-    color: "#aaa",
-  },
-  buttonsWrapper: {
-    display: "grid",
-    gridAutoFlow: "column",
-    gridGap: "0.5em",
-    alignContent: "center",
-    justifyContent: "start",
-  },
-  likeButtonWrapper: {
-    display: "grid",
-    gridAutoFlow: "column",
-    gridGap: "0.2em",
-    alignContent: "center",
-  },
-  likeButton: {
-    "&:hover": {
-      cursor: "pointer",
-      fill: "#9bacd1",
-    },
-  },
-  like: {
-    fill: "#3b5998",
-  },
-  likeText: {
-    alignSelf: "center",
-  },
-  discussionButton: {
-    background: theme.palette.primary.main,
-    color: "#fff",
-  },
-  deletePost: {
-    background: theme.palette.primary.danger,
-    color: "#fff",
-  },
 }));
 
 const Posts = () => {
@@ -117,8 +42,6 @@ const Posts = () => {
 
   const { isLoading, posts } = useSelector((state) => state.post);
   const [isProfileLoading, profile] = useMyProfile();
-
-  const history = useHistory();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -131,26 +54,6 @@ const Posts = () => {
 
   if (isLoading || isProfileLoading) return <Loader />;
   if (profile === null) return null;
-
-  const getLikeCountText = (hasUserLiked, likeCount) => {
-    if (!hasUserLiked) {
-      if (likeCount > 1) return `${likeCount} like this`;
-      return `${likeCount} likes this`;
-    }
-    if (likeCount === 1) return "You like this";
-    if (likeCount === 2) return "You and one other like this";
-    return `You and ${likeCount} others like this`;
-  };
-
-  const handleLikeOrUnlike = (postId, hasUserLiked) => {
-    let url;
-    if (hasUserLiked) {
-      url = `${process.env.REACT_APP_API_URL}/api/posts/${postId}/unlike`;
-    } else {
-      url = `${process.env.REACT_APP_API_URL}/api/posts/${postId}/like`;
-    }
-    dispatch(handleLikeOrUnlikeAsync({ url, user: profile.user._id }));
-  };
 
   return (
     <div className={classes.container}>
@@ -186,86 +89,35 @@ const Posts = () => {
               name,
               text,
               date,
-              comments,
               avatar,
               user,
+              comments,
             } = post;
-            const hasUserLiked = likes.find(
-              (like) => like.user === profile.user._id
-            );
 
             return (
-              <div key={_id} className={classes.post}>
-                <div className={classes.nameAndAvatarWrapper}>
-                  <Link className={classes.link} to={`/users/profiles/${user}`}>
-                    <div>
-                      <img src={avatar} className={classes.image} />
-                    </div>
-                    <div>
-                      <h4 className={classes.name}>{name}</h4>
-                    </div>
-                  </Link>
-                </div>
-                <div>
-                  <div>
-                    <Typography component="p">{text}</Typography>
-                  </div>
-                  <div className={classes.dateWrapper}>
-                    <Typography className={classes.date} component="span">
-                      Posted on {moment(date).format("DD-MM-YYYY")}
-                    </Typography>
-                  </div>
-                  <div className={classes.buttonsWrapper}>
-                    <div className={classes.likeButtonWrapper}>
-                      <div>
-                        <Like
-                          className={cx(
-                            classes.likeButton,
-                            hasUserLiked && classes.like
-                          )}
-                          onClick={() => handleLikeOrUnlike(_id, hasUserLiked)}
-                        />
-                      </div>
-                      <div className={classes.likeText}>
-                        <small>
-                          {likes.length !== 0
-                            ? getLikeCountText(hasUserLiked, likes.length)
-                            : ""}
-                        </small>
-                      </div>
-                    </div>
-                    <div>
-                      <Button
-                        onClick={() =>
-                          history.push({
-                            pathname: `/posts/${_id}`,
-                            state: {
-                              post,
-                              profile,
-                              postId: _id,
-                            },
-                          })
-                        }
-                        className={classes.discussionButton}
-                        variant="contained"
-                      >
-                        Discussion
-                        {comments.length === 0 ? "" : `(${comments.length})`}
-                      </Button>
-                    </div>
-                    {post.user === profile.user._id && (
-                      <div>
-                        <Button
-                          variant="contained"
-                          className={classes.deletePost}
-                        >
-                          Delete Post
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
+              <PostOrComment
+                key={_id}
+                _id={_id}
+                link={`/users/profiles/${user}`}
+                name={name}
+                text={text}
+                date={date}
+                avatar={avatar}
+                likes={likes}
+                variant="post"
+                type="show"
+                postDetails={{
+                  comments,
+                  historyPushObject: {
+                    pathname: `/posts/${_id}`,
+                    state: {
+                      post,
+                      profile,
+                      postId: _id,
+                    },
+                  },
+                }}
+              />
             );
           })
         ) : (

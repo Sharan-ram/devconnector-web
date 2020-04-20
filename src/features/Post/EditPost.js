@@ -8,16 +8,22 @@ import Typography from "@material-ui/core/Typography";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { addCommentAsync, deleteCommentAsync } from "./postSlice";
+import {
+  addCommentAsync,
+  deleteCommentAsync,
+  handleLikeOrUnlikeAsync,
+} from "./postSlice";
 
 import useMyProfile from "../../hooks/useMyProfile";
 import usePost from "../../hooks/usePost";
-import { Loader } from "../../components/ui";
+import { Loader, PostOrComment } from "../../components/ui";
 
 const useStyle = makeStyles({
-  post: {
+  container: {
+    width: "80%",
+    margin: "0 auto 2.5em",
     display: "grid",
-    gridTemplateColumns: "1fr 4fr",
+    gridGap: "1.5em",
   },
 });
 
@@ -39,7 +45,7 @@ const EditPostComponent = ({
   if (isLoading || isProfileLoading) return <Loader />;
   if (post === null || profile === null) return null;
 
-  const { _id, text, name, date, comments } = post;
+  const { _id, text, name, avatar, date, comments, user, likes } = post;
 
   const addComment = () => {
     dispatch(
@@ -55,17 +61,53 @@ const EditPostComponent = ({
     .slice()
     .sort((a, b) => moment(b.date).diff(moment(a.date)));
 
+  const handleLikeOrUnlike = (postId, hasUserLiked) => {
+    let url;
+    if (hasUserLiked) {
+      url = `${process.env.REACT_APP_API_URL}/api/posts/${postId}/unlike`;
+    } else {
+      url = `${process.env.REACT_APP_API_URL}/api/posts/${postId}/like`;
+    }
+    dispatch(handleLikeOrUnlikeAsync({ url, user: profile.user._id }));
+  };
+
+  const hasUserLiked = likes.find((like) => like.user === profile.user._id);
+
+  const getLikeCountText = (hasUserLiked, likeCount) => {
+    if (!hasUserLiked) {
+      if (likeCount > 1) return `${likeCount} like this`;
+      return `${likeCount} likes this`;
+    }
+    if (likeCount === 1) return "You like this";
+    if (likeCount === 2) return "You and one other like this";
+    return `You and ${likeCount} others like this`;
+  };
+
+  const deletePost = () => {};
+
+  const postDetails = {
+    comments,
+    hasUserLiked,
+    handleLikeOrUnlike,
+    deleteButtonClick: deletePost,
+    isPostOwner: post.user === profile.user._id,
+    getLikeCountText,
+  };
+
   return (
-    <div>
-      <div className={classes.post}>
-        <div>{name}</div>
-        <div>
-          <Typography component="p">{text}</Typography>
-          <Typography component="span">
-            Posted on {moment(date).format("DD-MM-YYYY")}
-          </Typography>
-        </div>
-      </div>
+    <div className={classes.container}>
+      <PostOrComment
+        _id={_id}
+        link={`/users/profiles/${user}`}
+        name={name}
+        text={text}
+        date={date}
+        avatar={avatar}
+        likes={likes}
+        variant="post"
+        type="edit"
+        postDetails={postDetails}
+      />
       <div>Leave a comment</div>
       <div>
         <TextareaAutosize
