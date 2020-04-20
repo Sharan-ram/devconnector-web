@@ -91,7 +91,12 @@ const PostOrComment = ({
   likes,
   variant,
   type,
-  postDetails: {
+  postDetails,
+}) => {
+  const classes = useStyle();
+  const history = useHistory();
+
+  const {
     comments,
     hasUserLiked,
     handleLikeOrUnlike,
@@ -99,10 +104,8 @@ const PostOrComment = ({
     getLikeCountText,
     historyPushObject,
     isPostOwner,
-  },
-}) => {
-  const classes = useStyle();
-  const history = useHistory();
+  } = postDetails || {};
+
   return (
     <div className={classes.post}>
       <div className={classes.nameAndAvatarWrapper}>
