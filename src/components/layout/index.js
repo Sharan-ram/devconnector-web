@@ -14,6 +14,8 @@ import PublicRoutes from "./PublicRoutes";
 import PrivateRoutes from "./PrivateRoutes";
 import TopNavigation from "./TopNavigation";
 
+import { Snackbar } from "../ui";
+
 const useStyles = makeStyles({
   container: {
     marginTop: "100px",
@@ -27,6 +29,7 @@ const Layout = () => {
     <Router>
       <TopNavigation />
       <div className={classes.container}>
+        <Snackbar />
         <Switch>
           <Route
             path="/account"
