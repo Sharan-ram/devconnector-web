@@ -1,4 +1,5 @@
 import React, { useReducer } from "react";
+import { useSelector } from "react-redux";
 import moment from "moment";
 import { DatePicker } from "@material-ui/pickers";
 
@@ -9,7 +10,7 @@ import TextField from "@material-ui/core/TextField";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import { makeStyles } from "@material-ui/styles";
 
-import { HeaderText } from "../../components/ui";
+import { HeaderText, FormErrors } from "../../components/ui";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -96,6 +97,9 @@ const EducationForm = ({
     { school, degree, fieldofstudy, from, to, current, description },
     dispatch,
   ] = useReducer(reducer, getInitialState({ type, education }));
+
+  const { error } = useSelector((state) => state.profile);
+
   const submitEducation = () => {
     dispatchFunction({
       _id: education?._id,
@@ -146,6 +150,7 @@ const EducationForm = ({
           }
           variant="outlined"
           fullWidth
+          required
         />
       </div>
       <div>
@@ -199,8 +204,18 @@ const EducationForm = ({
           className={classes.textArea}
         />
       </div>
+      <FormErrors text={error?.msg} />
       <div className={classes.buttonWrapper}>
-        <Button variant="contained" color="primary" onClick={submitEducation}>
+        <Button
+          disabled={
+            school.trim() === "" ||
+            degree.trim() === "" ||
+            fieldofstudy.trim() === ""
+          }
+          variant="contained"
+          color="primary"
+          onClick={submitEducation}
+        >
           Submit
         </Button>
         {type === "edit" && (
