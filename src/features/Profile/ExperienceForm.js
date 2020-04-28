@@ -1,4 +1,5 @@
 import React, { useReducer } from "react";
+import { useSelector } from "react-redux";
 import moment from "moment";
 import { DatePicker } from "@material-ui/pickers";
 
@@ -9,7 +10,7 @@ import TextField from "@material-ui/core/TextField";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import { makeStyles } from "@material-ui/styles";
 
-import { HeaderText } from "../../components/ui";
+import { HeaderText, FormErrors } from "../../components/ui";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -96,6 +97,9 @@ const ExperienceForm = ({
     { title, company, location, description, from, to, current },
     dispatch,
   ] = useReducer(reducer, getInitialState({ type, experience }));
+
+  const { error } = useSelector((state) => state.profile);
+
   const submitExperience = () => {
     dispatchFunction({
       _id: experience?._id,
@@ -197,8 +201,14 @@ const ExperienceForm = ({
           className={classes.textArea}
         />
       </div>
+      <FormErrors text={error?.msg} />
       <div className={classes.buttonWrapper}>
-        <Button variant="contained" color="primary" onClick={submitExperience}>
+        <Button
+          disabled={title.trim() === "" || company.trim() === ""}
+          variant="contained"
+          color="primary"
+          onClick={submitExperience}
+        >
           Submit
         </Button>
         {type === "edit" && (

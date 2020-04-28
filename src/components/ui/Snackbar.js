@@ -15,12 +15,11 @@ const Snackbar = () => {
   const closeSnackbar = () => {
     dispatch(clearState());
   };
-  console.log("open inside Snackar", open);
   return (
     <MuiSnackbar
       anchorOrigin={{
-        vertical: "left",
-        horizontal: "bottom",
+        vertical: "top",
+        horizontal: "right",
       }}
       open={open}
       autoHideDuration={3000}

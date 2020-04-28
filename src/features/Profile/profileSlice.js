@@ -22,6 +22,7 @@ const updateProfileData = (state, action) => {
   } else {
     state.isLoading = false;
     state.myProfile = myProfile;
+    state.error = null;
   }
 };
 
