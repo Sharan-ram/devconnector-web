@@ -1,40 +1,71 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 
 import useMyProfile from "../../hooks/useMyProfile";
 import { editEducationAsync, deleteEducationAsync } from "./profileSlice";
 import EducationForm from "./EducationForm";
 import { Loader } from "../../components/ui";
+import { showSnackbar } from "../../components/ui/uiSlice";
 
 const EditEducation = ({
   history: {
     location: { state },
   },
 }) => {
-  const [isLoading, profile] = useMyProfile(state);
-  const [redirectToDashboard, setRedirect] = useState(false);
+  const [isProfileLoading, profile] = useMyProfile(state);
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [educationDeleted, setEducationDeleted] = useState(false);
+  const { isLoading, error } = useSelector((state) => state.profile);
+
   const dispatch = useDispatch();
 
   if (!state) return <Redirect to="/" />;
 
-  if (isLoading) return <Loader />;
+  if (isProfileLoading) return <Loader />;
 
   if (profile === null) return null;
 
   const { educationId } = state;
   const education = profile.education.find((edu) => edu._id === educationId);
-  if (!education || redirectToDashboard) return <Redirect to="/" />;
+  /* When url is entered directly with wrong education id without navigating
+    from dashboard
+  */
+  if (!education) return <Redirect to="/" />;
 
   const editEducation = (education) => {
     dispatch(editEducationAsync(education));
-    setRedirect(true);
+    setFormSubmitted(true);
   };
 
   const deleteEducation = (id) => {
     dispatch(deleteEducationAsync(id));
-    setRedirect(true);
+    setEducationDeleted(true);
   };
+
+  if (formSubmitted && !isLoading) {
+    if (!error) {
+      dispatch(
+        showSnackbar({
+          message: "Education edited successfully!",
+          type: "success",
+        })
+      );
+      return <Redirect to="/" />;
+    }
+  }
+
+  if (educationDeleted && !isLoading) {
+    if (!error) {
+      dispatch(
+        showSnackbar({
+          message: "Education deleted successfully!",
+          type: "success",
+        })
+      );
+      return <Redirect to="/" />;
+    }
+  }
 
   return (
     <EducationForm
