@@ -81,7 +81,7 @@ const UserProfiles = () => {
           return (
             <div key={profileId} className={classes.profile}>
               <div className={classes.imageWrapper}>
-                <img src={avatar} className={classes.image} />
+                <img src={avatar} className={classes.image} alt="avatar" />
               </div>
               <div className={classes.details}>
                 <Typography className={classes.name} component="h2">

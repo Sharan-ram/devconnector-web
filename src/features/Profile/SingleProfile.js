@@ -142,7 +142,7 @@ const SingleProfileComponent = ({
 }) => {
   const classes = useStyle();
   const history = useHistory();
-  const [isProfileLoading, profile, error] = useProfileByUserId(state, userId);
+  const [isProfileLoading, profile] = useProfileByUserId(state, userId);
   const { githubRepos, isGithubReposLoading } = useSelector(
     (state) => state.profile
   );
@@ -190,7 +190,7 @@ const SingleProfileComponent = ({
       </div>
       <div className={classes.profile}>
         <div>
-          <img src={avatar} className={classes.avatar} />
+          <img src={avatar} className={classes.avatar} alt="avatar" />
         </div>
         <div className={classes.name}>{name}</div>
         <div>

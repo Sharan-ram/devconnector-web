@@ -30,8 +30,6 @@ const api = async (options) => {
     config.headers = headers;
   }
 
-  console.log("url config", url, config);
-
   try {
     const res = await axios({
       ...config,

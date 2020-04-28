@@ -2,11 +2,13 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import authSlice, { login as loginAction } from "./auth/authSlice";
 import profileSlice from "./features/Profile/profileSlice";
 import postSlice from "./features/Post/postSlice";
+import uiSlice from "./components/ui/uiSlice";
 
 const appReducer = combineReducers({
   auth: authSlice,
   profile: profileSlice,
   post: postSlice,
+  ui: uiSlice,
 });
 
 const rootReducer = (state, action) => {
