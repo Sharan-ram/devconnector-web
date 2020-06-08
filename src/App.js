@@ -30,6 +30,11 @@ const theme = createMuiTheme({
         textAlign: "center",
       },
     },
+    MuiButton: {
+      label: {
+        color: "#fff",
+      },
+    },
   },
 });
 
