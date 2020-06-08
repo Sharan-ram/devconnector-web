@@ -66,6 +66,7 @@ const EditPostComponent = ({
     dispatch(
       addCommentAsync({ postId: _id, text: comment, user: profile.user._id })
     );
+    setComment("");
   };
 
   const deleteComment = (id) => {

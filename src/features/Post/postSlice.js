@@ -53,10 +53,7 @@ const postSlice = createSlice({
         state.isLikesLoading = false;
       } else {
         state.isLikesLoading = false;
-        const postIndex = state.posts.findIndex(
-          (statePost) => statePost._id === post._id
-        );
-        state.posts[postIndex] = post;
+        state.post = post;
       }
     },
     getPostById(state, action) {
